@@ -1,21 +1,33 @@
 # BTHomeV2-Arduino
 
-Easily set up your device to emit BTHome events via Bluetooth Low Energy (BLE);
+## BTHome is an open standard for broadcasting sensor data and button presses over Bluetooth LE 
+
+[<img src="./assets/bthome-logo.png" alt="BTHome Logo" height="100"/>](https://bthome.io/)
+[<img src="./assets/ha-logo.png" alt="Home Assistant Logo" height="100" style="background-color:white;"/>](https://www.home-assistant.io/integrations/bthome/)
+
+
+Easily set up your device to emit BTHome BLE events via Bluetooth Low Energy (BLE);
 More information on BTHome https://bthome.io/
 
-BTHome makes it easier to add very low power sensing devices to your Home Network using standard Arduino devices such as the FireBeetle 2 ESP32-C6.
+Check the progress table below to see if your requested feature is available. 
+Create an issue if you want to see something added.
 
 BTHome devices can be integrated into Home Assistant via ESP Home 
 https://www.home-assistant.io/integrations/bthome/
 
-
+BTHome makes it easier to add very low power sensing devices to your Home Network using standard Arduino devices such as any ESP32, or more specifically the ultra low power,  battery driven devices such as the FireBeetle 2 ESP32-C6.
 
 ## Usage
 
-Refer to the examples files  for specific library implementations 
+Refer to the directory `./examples`  for specific library implementations.
+
+### NimBLE Example
+Nimble Repository: https://github.com/h2zero/NimBLE-Arduino
+
+Example file: [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
+
 ```cpp
 void loop() {
- NimBLEDevice::init("");
   BtHomeV2Device btHome("DIY-sensor", "My DIY Sensor", false);
   btHome.addCount_0_255(22);
 
@@ -29,10 +41,10 @@ void loop() {
   // 06 (<- Length) 16 (<- Service Data ) d2 fc ( <- BTHome UUID ) 
   // 40 ( <- BTHomeV2 / Encryption / Trigger Device ) 09 (<- Count 0-255 )  16 (<-'25')
 
+  NimBLEDevice::init("");
   NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
   NimBLEAdvertisementData pAdvData = BLEAdvertisementData(); 
-  std::vector<uint8_t> data(buffer, buffer + size);
-
+  std::vector<uint8_t> data(buffer, buffer + size); // convert the buffer to something NimBLE takes 
   pAdvData.addData(data);
   pAdvertising->setAdvertisementData(pAdvData);
   pAdvertising->setConnectableMode(0);
@@ -47,8 +59,30 @@ void loop() {
 }
 ```
 
+## Troubleshooting 
 
-## Progress
+If you are using the [FireBeetle2 ESP-C6](https://wiki.dfrobot.com/SKU_DFR0975_FireBeetle_2_Board_ESP32_C6), or any other `ESP32-C*`, you may need to enable USB CDC to see the Serial output. 
+
+<img src="./assets/CDC-Enabled.png" alt="Arduino IDE CDC Enable" height="100"/>
+
+# Credits 
+Thanks to @Chreece and @TheDigital1 + other contributors for providing a good base to work from.
+
+- https://github.com/Chreece/BTHomeV2-ESP32-example
+- https://github.com/TheDigital1/ESP32_BTHome
+
+Thanks to @Bluetooth-Devices for the docs
+
+- https://github.com/Bluetooth-Devices
+
+
+## Implementation Progress
+
+### No Encryption currently planned
+
+I'm currently not looking at encryption. I might look at implementing it in the future.
+
+### Data Types 
 
 Quite a few things to implement, but hopefully will get through them all.
 
@@ -153,3 +187,5 @@ Quite a few things to implement, but hopefully will get through them all.
 | dimmer | 0x00      | None              |          |
 | dimmer | 0x01      | rotate left       |          |
 | dimmer | 0x02      | rotate right      |          |
+
+
