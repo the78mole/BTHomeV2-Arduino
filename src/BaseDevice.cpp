@@ -138,17 +138,6 @@ bool BaseDevice::addRaw(BtHomeType sensor, uint8_t *value, uint8_t size)
 
 size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
 {
-    /**
-   * 02 01 06                             ← Flags
-   * 0B (length) -- 09 (name indicator) -- 44 49 59 2D 73 65 6E 73 6F 72  ← Complete Local Name: “DIY-sensor”
-   * 0A (length) -- 16 (payload indicator) -- D2 FC 40 02 C4 09 03 BF 13    ← BTHome Service Data
-   *
-   * Or another example:
-   * 02 01 06                                     │ Flags
-   * 05 08 44 49 59 2D                            │ Length=5, AD type=0x08, "DIY-"
-   * 0B 09 44 49 59 2D 73 65 6E 73 6F 72          │ Length=11, AD type=0x09, "DIY-sensor"
-   * 0A 16 D2 FC 40 ...                           │ BTHome service data
-   */
   size_t idx = 0; // Tracks the next write position in buffer
 
   // 1. Flags
@@ -190,12 +179,6 @@ size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
   // Sensor Data
   for (size_t i = 0; i < _sensorDataIdx; i++)
     buffer[idx++] = _sensorData[i];
-
-  // (No need to separately "add length" at the end; done above)
-
-  // Optionally: print total length for debugging
-  Serial.print("Advertisement total length: ");
-  Serial.println(idx);
 
   return idx; // Number of bytes written to buffer
 }
