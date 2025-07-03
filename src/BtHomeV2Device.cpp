@@ -10,10 +10,10 @@ void BtHomeV2Device::clearMeasurementData()
 /// @return
 size_t BtHomeV2Device::getAdvertisementData(uint8_t *buffer)
 {
-    return _baseDevice.getAdvertisementData(buffer); 
+    return _baseDevice.getAdvertisementData(buffer);
 }
 
-BtHomeV2Device::BtHomeV2Device( const char *shortName,  const char *completeName, bool isTriggerDevice) : _baseDevice(shortName, completeName, isTriggerDevice) // Initialize with default device name and trigger-based device flag
+BtHomeV2Device::BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerDevice) : _baseDevice(shortName, completeName, isTriggerDevice) // Initialize with default device name and trigger-based device flag
 {
 }
 
@@ -80,6 +80,16 @@ bool BtHomeV2Device::addCount_neg2147483648_2147483647(int32_t count)
     return _baseDevice.addSignedInteger(count_int32, static_cast<uint64_t>(count));
 }
 
+bool BtHomeV2Device::addHumidity_0_01(float humidityPercent)
+{
+    return _baseDevice.addFloat(humidity_uint16, humidityPercent);
+}
+
+bool BtHomeV2Device::addHumidity_0_1(float humidityPercent)
+{
+    return _baseDevice.addFloat(humidity_uint8, humidityPercent);
+}
+
 bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResolution)
 {
 
@@ -99,5 +109,5 @@ bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResol
 
 bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)
 {
-   return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);
+    return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);
 }

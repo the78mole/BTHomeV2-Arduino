@@ -30,10 +30,11 @@ Nimble Repository: https://github.com/h2zero/NimBLE-Arduino
 Example file: [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
 
 ```cpp
-void loop() {
+  // #include <BtHomeV2Device.h>
+
+  // Build advertising data
   BtHomeV2Device btHome("DIY-sensor", "My DIY Sensor", false);
   btHome.addCount_0_255(22);
-
   uint8_t buffer[MAX_PAYLOAD_SIZE];
   size_t size = btHome.getAdvertisementData(buffer);
 
@@ -43,6 +44,8 @@ void loop() {
   // 0e (<- Length) 09 (<- Complete Name) 4d 79 20 44 49 59 20 53 65 6e 73 6f 72 (<- My DIY Sensor) 
   // 06 (<- Length) 16 (<- Service Data ) d2 fc ( <- BTHome UUID ) 
   // 40 ( <- BTHomeV2 / Encryption / Trigger Device ) 09 (<- Count 0-255 )  16 (<-'25')
+
+  // Setting up the BLE
 
   NimBLEDevice::init("");
   NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
@@ -55,11 +58,8 @@ void loop() {
   pAdvertising->start();
   delay(1000);
   pAdvertising->stop();
-
   delay(1000);
-
   Serial.println("Advertising data sent.");
-}
 ```
 
 ## Troubleshooting 
@@ -114,8 +114,8 @@ Quite a few things to implement, but hopefully will get through them all.
 | Sensor | 0x4B      | gas               |          |                                                                                    |
 | Sensor | 0x4C      | gas               |          |                                                                                    |
 | Sensor | 0x52      | gyroscope         |          |                                                                                    |
-| Sensor | 0x03      | humidity          | Next     |                                                                                    |
-| Sensor | 0x2E      | humidity          | Next     |                                                                                    |
+| Sensor | 0x03      | humidity          | Done     |                                                                                    |
+| Sensor | 0x2E      | humidity          | Done     |                                                                                    |
 | Sensor | 0x05      | illuminance       |          |                                                                                    |
 | Sensor | 0x06      | mass (kg)         |          |                                                                                    |
 | Sensor | 0x07      | mass (lb)         |          |                                                                                    |

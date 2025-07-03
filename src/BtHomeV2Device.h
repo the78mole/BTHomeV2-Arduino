@@ -88,11 +88,17 @@ public:
      */
     bool addTemperature(float degreesCelsius, TemperatureRangeResolution rangeResolution);
 
-    // /**
-    //  * @brief Set the humidity value in the packet.
-    //  * @param humidityPercent Relative humidity in percent.
-    //  */
-    // bool addHumidity(float humidityPercent);
+    /**
+     * @brief Set the humidity value with a resolution of 0.01% in the packet. 2 bytes.
+     * @param humidityPercent Relative humidity in percent.
+     */
+    bool addHumidity_0_01(float humidityPercent);
+    
+    /**
+     * @brief Set the humidity value with a resolution of 0.1% in the packet. 1 byte.
+     * @param humidityPercent Relative humidity in percent.
+     */
+    bool addHumidity_0_1(float humidityPercent);
 
     // /**
     //  * @brief Set the illuminance (light level) value in the packet.
