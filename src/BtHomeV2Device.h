@@ -221,18 +221,7 @@ public:
     // bool addGenericInt(int32_t valueInt);
 
 private:
-    bool addFloat(uint8_t dataTypeId, float value);
-    bool addUInt8(uint8_t dataTypeId, uint8_t value);
-    bool addUInt16(uint8_t dataTypeId, uint16_t value);
-    bool addUInt32(uint8_t dataTypeId, uint32_t value);
-    bool AddInt32(uint8_t dataTypeId, int32_t value);
-    bool addMeasurement(uint8_t dataTypeId, const uint8_t *data, size_t len);
-    bool addLocalName(const char *name, bool isShortName);
-
     BaseDevice _baseDevice;
-    uint8_t _measurementData[MAX_PAYLOAD_SIZE];
-    size_t _measurementDataLength = 0;
-    size_t _lengthByte;
 };
 
 #endif // BT_HOME_H

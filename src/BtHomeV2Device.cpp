@@ -87,13 +87,11 @@ bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResol
     {
     case RANGE_65_RESOLUTION_0_001:
     {
-        uint16_t value = static_cast<uint16_t>(voltage / voltage_0_001.scale);
-        return addUInt16(voltage_0_1.id, value);
+        return _baseDevice.addFloat(voltage_0_001, voltage);
     }
     case RANGE_65535_RESOLUTION_0_1:
     {
-        uint16_t value = static_cast<uint16_t>(voltage / voltage_0_1.scale);
-        return addUInt16(voltage_0_1.id, value);
+        return _baseDevice.addFloat(voltage_0_1, voltage);
     }
     }
     return false;
@@ -101,5 +99,5 @@ bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResol
 
 bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)
 {
-    return addUInt8(battery_percentage.id, batteryPercentage / battery_percentage.scale);
+   return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);
 }
