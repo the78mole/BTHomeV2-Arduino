@@ -21,6 +21,9 @@ BTHome makes it easier to add very low power sensing devices to your Home Networ
 
 Refer to the directory `./examples`  for specific library implementations.
 
+- esphome proxy configuration
+- NimBLE BLE Library 
+
 ### NimBLE Example
 Nimble Repository: https://github.com/h2zero/NimBLE-Arduino
 
