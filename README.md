@@ -176,18 +176,18 @@ Quite a few things to implement, but hopefully will get through them all.
 | binary | 0x2C      | vibration             | Done     |                                                                                    |
 | binary | 0x2D      | window                | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
-| button | 0x00      | None                  |          |                                                                                    |
-| button | 0x01      | press                 |          |                                                                                    |
-| button | 0x02      | double_press          |          |                                                                                    |
-| button | 0x03      | triple_press          |          |                                                                                    |
-| button | 0x04      | long_press            |          |                                                                                    |
-| button | 0x05      | long_double_press     |          |                                                                                    |
-| button | 0x06      | long_triple_press     |          |                                                                                    |
-| button | 0x80      | hold_press            |          |                                                                                    |
+| button | 0x00      | None                  | Done     | Button state must transition from None to another State to register                |
+| button | 0x01      | press                 | Done     |                                                                                    |
+| button | 0x02      | double_press          | Done     |                                                                                    |
+| button | 0x03      | triple_press          | Done     |                                                                                    |
+| button | 0x04      | long_press            | Done     |                                                                                    |
+| button | 0x05      | long_double_press     | Done     |                                                                                    |
+| button | 0x06      | long_triple_press     | Done     |                                                                                    |
+| button | 0x80      | hold_press            | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
-| dimmer | 0x00      | None                  |          |                                                                                    |
-| dimmer | 0x01      | rotate left           |          |                                                                                    |
-| dimmer | 0x02      | rotate right          |          |                                                                                    |
+| dimmer | 0x00      | None                  | Done     | Dimmer state must transition from None to another state to register                |
+| dimmer | 0x01      | rotate left           | Done     |                                                                                    |
+| dimmer | 0x02      | rotate right          | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
 | misc   | 0x00      | packet id             |          |                                                                                    |
 |        |           |                       |          |                                                                                    |
