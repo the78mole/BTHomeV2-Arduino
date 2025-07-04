@@ -1,6 +1,8 @@
 #include "definitions.h"
 #include <Arduino.h>
 #include <data_types.h>
+static const size_t MAX_PAYLOAD_SIZE = 31;
+
 
 class BaseDevice {
   public:

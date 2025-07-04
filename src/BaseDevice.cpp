@@ -10,13 +10,15 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 {
 
   strncpy(_shortName, shortName, MAX_LENGTH_SHORT_NAME);
-  _shortName[MAX_LENGTH_SHORT_NAME] = '\0';
+  _shortName[MAX_LENGTH_SHORT_NAME - 1] = '\0';
 
   strncpy(_completeName, completeName, MAX_LENGTH_COMPLETE_NAME);
-  _completeName[MAX_LENGTH_COMPLETE_NAME] = '\0';
+  _completeName[MAX_LENGTH_COMPLETE_NAME - 1] = '\0';
 
-  // 27 bytes left after flags and other headers
-  _maximumMeasurementBytes = 27 - strlen(_shortName) - 2; // 2 bytes for the name id and size byte
+  // 09XXXXX 1 + short name length
+  // 020106050816D2FC40 = 9 for flags
+  uint8_t bytesTaken = (_shortName, MAX_LENGTH_SHORT_NAME) + 1 + 9;
+  _maximumMeasurementBytes = MAX_PAYLOAD_SIZE - bytesTaken; // 2 bytes for the name id and size byte
 }
 
 /// @brief Clear the measurement data.
@@ -32,8 +34,9 @@ void BaseDevice::resetMeasurement()
 bool BaseDevice::hasEnoughSpace(BtHomeState sensor)
 {
   // minimum space is needed for the short name, but if there is spare room then we can use the full name
-  uint8_t shortNameSize = strlen(_shortName) + 2; // 1 byte for the name id and one for the size byte
-  return (_sensorDataIdx + sensor.byteCount + 2) <= _maximumMeasurementBytes;
+  int remainingBytes = _maximumMeasurementBytes - _sensorDataIdx;
+  bool result = (remainingBytes >= sensor.byteCount + 1); // include sensor indicator byte
+  return result;
 }
 
 /// @brief Add a state or step value to the sensor data packet.

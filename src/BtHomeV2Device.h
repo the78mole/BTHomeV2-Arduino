@@ -11,7 +11,6 @@
  * @brief BTHome v2 sensor data setter methods with summaries.
  */
 
-static const size_t MAX_PAYLOAD_SIZE = 31;
 
 /// @brief Battery state options
 enum BATTERY_STATE
