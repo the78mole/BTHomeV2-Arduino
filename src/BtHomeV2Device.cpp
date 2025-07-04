@@ -266,3 +266,13 @@ bool BtHomeV2Device::setWindowState(Window_Sensor_Status windowState)
 {
     return _baseDevice.addState(window, windowState);
 }
+
+bool BtHomeV2Device::eventButton(Button_Event_Status buttonEvent)
+{
+    return _baseDevice.addState(button, buttonEvent);
+}
+
+bool BtHomeV2Device::eventDimmer(Dimmer_Event_Status dimmerEvent)
+{
+    return _baseDevice.addState(dimmer, dimmerEvent);
+}

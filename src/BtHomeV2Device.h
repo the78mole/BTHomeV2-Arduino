@@ -128,6 +128,9 @@ public:
     bool setVibrationState(Vibration_Sensor_Status vibrationState);
     bool setWindowState(Window_Sensor_Status windowState);
 
+    bool eventButton(Button_Event_Status buttonEvent);
+    bool eventDimmer(Dimmer_Event_Status dimmerEvent);
+
     /**
      * @brief Set the temperature value in the packet.
      * @param degreesCelsius Temperature in degrees Celsius.

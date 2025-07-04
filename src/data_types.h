@@ -91,7 +91,7 @@ const BtHomeType volume_storage = {0x55, 0.001f, 4, true};
 const BtHomeType volume_flow_rate = {0x49, 0.001f, 2, false};
 const BtHomeType UV_index = {0x46, 0.1f, 1, false};
 const BtHomeType water_litre = {0x4F, 0.001f, 4, true};
-const BtHomeType time_type = {0x50, 1.0f, 4, false };
+const BtHomeType time_type = {0x50, 1.0f, 4, false};
 
 // raw (0x54)  require custom serialization
 
@@ -123,6 +123,28 @@ const BtHomeState sound = {0x2A, 1};
 const BtHomeState tamper = {0x2B, 1};
 const BtHomeState vibration = {0x2C, 1};
 const BtHomeState window = {0x2D, 1};
+
+const BtHomeState button = {0x3A, 1};
+const BtHomeState dimmer = {0x3C, 1};
+
+enum Button_Event_Status
+{
+    Button_Event_Status_None = 0x00,
+    Button_Event_Status_Press = 0x01,
+    Button_Event_Status_Double_Press = 0x02,
+    Button_Event_Status_Triple_Press = 0x03,
+    Button_Event_Status_Long_Press = 0x04,
+    Button_Event_Status_Long_Double_Press = 0x05,
+    Button_Event_Status_Long_Triple_Press = 0x06,
+    Button_Event_Status_Hold_Press = 0x8
+};
+
+enum Dimmer_Event_Status
+{
+    Dimmer_Event_Status_None = 0x00,
+    Dimmer_Event_Status_RotateLeft = 0x01,
+    Dimmer_Event_Status_RotateRight = 0x02
+};
 
 enum Battery_Sensor_Status
 {
