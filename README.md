@@ -127,7 +127,7 @@ Quite a few things to implement, but hopefully will get through them all.
 | Sensor | 0x5C      | power                 |          |                                                                                    |
 | Sensor | 0x5F      | precipitation         |          |                                                                                    |
 | Sensor | 0x04      | pressure              |          |                                                                                    |
-| Sensor | 0x54      | raw                   |          |                                                                                    |
+| Sensor | 0x54      | raw                   | Done     |                                                                                    |
 | Sensor | 0x3F      | rotation              |          |                                                                                    |
 | Sensor | 0x44      | speed                 |          |                                                                                    |
 | Sensor | 0x57      | temperature           | Done     |                                                                                    |
@@ -147,37 +147,34 @@ Quite a few things to implement, but hopefully will get through them all.
 | Sensor | 0x46      | UV index              |          |                                                                                    |
 | Sensor | 0x4F      | water                 |          |                                                                                    |
 |        |           |                       |          |                                                                                    |
-|        | Object id | Property              |          |                                                                                    |
-| Binary | 0x15      | battery  (normal/low) | Done     |                                                                                    |
-| Binary | 0x16      | battery charging      | Done     |                                                                                    |
-| Binary | 0x17      | carbon monoxide       | Done     |                                                                                    |
-| Binary | 0x18      | cold                  | Done     |                                                                                    |
-| Binary | 0x19      | connectivity          | Done     |                                                                                    |
-| Binary | 0x1A      | door                  | Done     |                                                                                    |
-| Binary | 0x1B      | garage door           | Done     |                                                                                    |
-| Binary | 0x1C      | gas                   | Done     |                                                                                    |
-| Binary | 0x0F      | generic boolean       | Done     |                                                                                    |
-| Binary | 0x1D      | heat                  | Done     |                                                                                    |
-| Binary | 0x1E      | light                 | Done     |                                                                                    |
-| Binary | 0x1F      | lock                  | Done     |                                                                                    |
-| Binary | 0x20      | moisture              | Done     |                                                                                    |
-| Binary | 0x21      | motion                | Done     |                                                                                    |
-| Binary | 0x22      | moving                | Done     |                                                                                    |
-| Binary | 0x23      | occupancy             | Done     |                                                                                    |
-| Binary | 0x11      | opening               | Done     |                                                                                    |
-| Binary | 0x24      | plug                  | Done     |                                                                                    |
-| Binary | 0x10      | power                 | Done     |                                                                                    |
-| Binary | 0x25      | presence              | Done     |                                                                                    |
-| Binary | 0x26      | problem               | Done     |                                                                                    |
-| Binary | 0x27      | running               | Done     |                                                                                    |
-| Binary | 0x28      | safety                | Done     |                                                                                    |
-| Binary | 0x29      | smoke                 | Done     |                                                                                    |
-| Binary | 0x2A      | sound                 | Done     |                                                                                    |
-| Binary | 0x2B      | tamper                | Done     |                                                                                    |
-| Binary | 0x2C      | vibration             | Done     |                                                                                    |
-| Binary | 0x2D      | window                | Done     |                                                                                    |
-|        |           |                       |          |                                                                                    |
-|        |           |                       |          |                                                                                    |
+| binary | 0x15      | battery  (normal/low) | Done     |                                                                                    |
+| binary | 0x16      | battery charging      | Done     |                                                                                    |
+| binary | 0x17      | carbon monoxide       | Done     |                                                                                    |
+| binary | 0x18      | cold                  | Done     |                                                                                    |
+| binary | 0x19      | connectivity          | Done     |                                                                                    |
+| binary | 0x1A      | door                  | Done     |                                                                                    |
+| binary | 0x1B      | garage door           | Done     |                                                                                    |
+| binary | 0x1C      | gas                   | Done     |                                                                                    |
+| binary | 0x0F      | generic boolean       | Done     |                                                                                    |
+| binary | 0x1D      | heat                  | Done     |                                                                                    |
+| binary | 0x1E      | light                 | Done     |                                                                                    |
+| binary | 0x1F      | lock                  | Done     |                                                                                    |
+| binary | 0x20      | moisture              | Done     |                                                                                    |
+| binary | 0x21      | motion                | Done     |                                                                                    |
+| binary | 0x22      | moving                | Done     |                                                                                    |
+| binary | 0x23      | occupancy             | Done     |                                                                                    |
+| binary | 0x11      | opening               | Done     |                                                                                    |
+| binary | 0x24      | plug                  | Done     |                                                                                    |
+| binary | 0x10      | power                 | Done     |                                                                                    |
+| binary | 0x25      | presence              | Done     |                                                                                    |
+| binary | 0x26      | problem               | Done     |                                                                                    |
+| binary | 0x27      | running               | Done     |                                                                                    |
+| binary | 0x28      | safety                | Done     |                                                                                    |
+| binary | 0x29      | smoke                 | Done     |                                                                                    |
+| binary | 0x2A      | sound                 | Done     |                                                                                    |
+| binary | 0x2B      | tamper                | Done     |                                                                                    |
+| binary | 0x2C      | vibration             | Done     |                                                                                    |
+| binary | 0x2D      | window                | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
 | button | 0x00      | None                  |          |                                                                                    |
 | button | 0x01      | press                 |          |                                                                                    |
@@ -187,8 +184,14 @@ Quite a few things to implement, but hopefully will get through them all.
 | button | 0x05      | long_double_press     |          |                                                                                    |
 | button | 0x06      | long_triple_press     |          |                                                                                    |
 | button | 0x80      | hold_press            |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
 | dimmer | 0x00      | None                  |          |                                                                                    |
 | dimmer | 0x01      | rotate left           |          |                                                                                    |
 | dimmer | 0x02      | rotate right          |          |                                                                                    |
-
+|        |           |                       |          |                                                                                    |
+| misc   | 0x00      | packet id             |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
+| device | 0xF0      | device type id        |          |                                                                                    |
+| device | 0xF1      | firmware version      |          |                                                                                    |
+| device | 0xF2      | firmware version      |          |                                                                                    |
 

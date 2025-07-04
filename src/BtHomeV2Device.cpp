@@ -107,12 +107,19 @@ bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResol
     return false;
 }
 
-bool BtHomeV2Device::addText(const char text[]){
-    return _baseDevice.addRaw(0x53, (uint8_t*)text, strlen(text));
+bool BtHomeV2Device::addText(const char text[])
+{
+    return _baseDevice.addRaw(0x53, (uint8_t *)text, strlen(text));
 }
 
-bool BtHomeV2Device::addTime(uint32_t secondsSinceEpoch){
+bool BtHomeV2Device::addTime(uint32_t secondsSinceEpoch)
+{
     return _baseDevice.addUnsignedInteger(timestamp, secondsSinceEpoch);
+}
+
+bool BtHomeV2Device::addRaw(uint8_t *bytes, uint8_t size)
+{
+    return _baseDevice.addRaw(0x54, bytes, size);
 }
 
 bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)

@@ -95,6 +95,10 @@ public:
     /// @return 
     bool addTime(uint32_t secondsSinceUnixEpoch);
 
+
+    bool addRaw(uint8_t* bytes, uint8_t size);
+
+
     bool setBatteryState(BATTERY_STATE batteryState);
     bool setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState);
     bool setCarbonMonoxideState(Carbon_Monoxide_Sensor_Status carbonMonoxideState);
