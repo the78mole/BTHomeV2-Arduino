@@ -1,0 +1,22 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased] - Major breaking release
+
+### Added
+- Most remaining sensors have been added, but not all have been tested.
+
+### Changed
+- Not using enum style methods for value sensors. Will continue to use them for the states.
+
+### Removed
+- Temperature and Voltage enum style methods
+
+## [1.1.1] and below
+
+- Something that works, but only just.
+- Working events (button and dimmer)

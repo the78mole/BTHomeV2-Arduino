@@ -13,28 +13,6 @@
 
 static const size_t MAX_PAYLOAD_SIZE = 31;
 
-/// @brief Temperature range resolution options for BTHome temperature data
-enum TemperatureRangeResolution
-{
-    /// @brief Temperature range -127 to 127  degrees Celsius, resolution 1 degree Celsius - 1 byte
-    RANGE_127_RESOLUTION_1,
-    /// @brief Temperature range -57 to 57 degrees Celsius, resolution 0.35 degrees Celsius - 1 byte
-    RANGE_44_RESOLUTION_0_35,
-    /// @brief Temperature range -327.68 to 327.67 degrees Celsius, resolution 0.1 degrees Celsius - 2 bytes
-    RANGE_327_RESOLUTION_0_01,
-    /// @brief Temperature range -3276.8 to 3276.7 degrees Celsius, resolution 0.01 degrees Celsius - 2 bytes
-    RANGE_3276_RESOLUTION_0_1
-};
-
-/// @brief Voltage range resolution options for BTHome Voltage data
-enum VoltageRangeResolution
-{
-    /// @brief Voltage range 0 to 65.535 volts, resolution 0.001 volts - 2 bytes
-    RANGE_65_RESOLUTION_0_001,
-    /// @brief Voltage range 0 to 6553.5 volts, resolution 0.1 volts - 2 bytes
-    RANGE_65535_RESOLUTION_0_1
-};
-
 /// @brief Battery state options
 enum BATTERY_STATE
 {
@@ -46,18 +24,13 @@ class BtHomeV2Device
 {
 public:
     /// @brief
-    /// @param shortName Short name of the device - sent when space is limited. Max 12 characters
-    /// @param completeName  Full name of the device - sent when space is available
+    /// @param shortName Short name of the device - sent when space is limited. Max 10 characters
+    /// @param completeName  Full name of the device - sent when space is available. Max 20 characters
     /// @param isTriggerDevice - If the device sends data when triggered
     BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerDevice);
     size_t getAdvertisementData(uint8_t *buffer);
-    void clearMeasurementData();
 
-    /**
-     * @brief Set the voltage value in the packet.
-     * @param voltageVolts Voltage in volts.
-     */
-    bool addVoltage(float voltage, VoltageRangeResolution rangeResolution);
+    void clearMeasurementData();
 
     /**
      * @brief Set a generic count value in the packet.
@@ -76,11 +49,16 @@ public:
      */
     bool addDistanceMetres(float distanceMetres);
 
+    bool addTemperature_neg44_to_44_Resolution_0_35(float degreesCelsius);
+    bool addTemperature_neg127_to_127_Resolution_1(int8_t degreesCelsius);
+    bool addTemperature_neg3276_to_3276_Resolution_0_1(float degreesCelsius);
+    bool addTemperature_neg327_to_327_Resolution_0_01(float degreesCelsius);
+
     /**
      * @brief Set the distance measurement value in the packet.
      * @param distanceMillimetres Distance in metres.
      */
-    bool addDistanceMillimetres(float distanceMillimetres);
+    bool addDistanceMillimetres(uint16_t millimetres);
 
     /**
      * @brief Set the battery level value in the packet.
@@ -89,15 +67,13 @@ public:
     bool addBatteryPercentage(uint8_t batteryPercentage);
 
     bool addText(const char text[]);
-    
-    /// @brief Add seconds since the unix epoch 
+
+    /// @brief Add seconds since the unix epoch
     /// @param secondsSinceUnixEpoch - Seconds since the unix epoch
-    /// @return 
+    /// @return
     bool addTime(uint32_t secondsSinceUnixEpoch);
 
-
-    bool addRaw(uint8_t* bytes, uint8_t size);
-
+    bool addRaw(uint8_t *bytes, uint8_t size);
 
     bool setBatteryState(BATTERY_STATE batteryState);
     bool setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState);
@@ -128,153 +104,93 @@ public:
     bool setVibrationState(Vibration_Sensor_Status vibrationState);
     bool setWindowState(Window_Sensor_Status windowState);
 
-    bool eventButton(Button_Event_Status buttonEvent);
-    bool eventDimmer(Dimmer_Event_Status dimmerEvent, uint8_t steps);
-
-    /**
-     * @brief Set the temperature value in the packet.
-     * @param degreesCelsius Temperature in degrees Celsius.
-     * @param rangeResolution The temperature range and resolution.
-     */
-    bool addTemperature(float degreesCelsius, TemperatureRangeResolution rangeResolution);
+    bool setButtonEvent(Button_Event_Status buttonEvent);
+    bool setDimmerEvent(Dimmer_Event_Status dimmerEvent, uint8_t steps);
 
     /**
      * @brief Set the humidity value with a resolution of 0.01% in the packet. 2 bytes.
      * @param humidityPercent Relative humidity in percent.
      */
-    bool addHumidity_0_01(float humidityPercent);
+    bool addHumidityPercent_Resolution_0_01(float humidityPercent);
 
     /**
      * @brief Set the humidity value with a resolution of 0.1% in the packet. 1 byte.
      * @param humidityPercent Relative humidity in percent.
      */
-    bool addHumidity_0_1(float humidityPercent);
+    bool addHumidityPercent_Resolution_1(uint8_t humidityPercent);
 
-    // /**
-    //  * @brief Set the illuminance (light level) value in the packet.
-    //  * @param illuminanceLux Ambient light in lux.
-    //  */
-    // bool addIlluminance(float illuminanceLux);
+    bool addAccelerationMs2(float value);
 
-    // /**
-    //  * @brief Set the button state in the packet.
-    //  * @param buttonState Button state as an unsigned 8-bit value (e.g., pressed/released).
-    //  */
-    // bool addButton(uint8_t buttonState);
+    bool addChannel(uint8_t value);
 
-    // /**
-    //  * @brief Set the soil moisture value in the packet.
-    //  * @param moisturePercent Moisture level as a float (e.g., percentage).
-    //  */
-    // bool addMoisture(float moisturePercent);
+    bool addCo2Ppm(uint16_t value);
 
-    // /**
-    //  * @brief Set the conductivity value in the packet.
-    //  * @param conductivityMicroSiemensCm Electrical conductivity in µS/cm.
-    //  */
-    // bool addConductivity(uint16_t conductivityMicroSiemensCm);
+    bool addConductivityMicrosecondsPerCm(float value);
 
-    // /**
-    //  * @brief Set the power (wattage) value in the packet.
-    //  * @param powerWatts Power in watts.
-    //  */
-    // bool addPower(float powerWatts);
+    bool addCurrentAmps_0_65(float value);
 
-    // /**
-    //  * @brief Set the energy consumption value in the packet.
-    //  * @param energyWattHours Energy in watt-hours.
-    //  */
-    // bool addEnergy(float energyWattHours);
+    bool addCurrentAmps_neg32_to_32(float value);
 
-    // /**
-    //  * @brief Set the current value in the packet.
-    //  * @param currentAmperes Current in amperes.
-    //  */
-    // bool addCurrent(float currentAmperes);
+    bool addDewPointDegreesCelsius(float value);
 
-    // /**
-    //  * @brief Set the particulate matter (PM2.5) value in the packet.
-    //  * @param pm2_5MicrogramsM3 PM2.5 concentration in µg/m³.
-    //  */
-    // bool addPM2_5(uint16_t pm2_5MicrogramsM3);
+    bool addDirectionDegrees(float value);
 
-    // /**
-    //  * @brief Set the particulate matter (PM10) value in the packet.
-    //  * @param pm10MicrogramsM3 PM10 concentration in µg/m³.
-    //  */
-    // bool addPM10(uint16_t pm10MicrogramsM3);
+    bool addDurationSeconds(float value);
 
-    // /**
-    //  * @brief Set the CO₂ concentration value in the packet.
-    //  * @param co2PPM Carbon dioxide concentration in ppm.
-    //  */
-    // bool addCO2(uint16_t co2PPM);
+    bool addEnergyKwh_0_to_16777(float value);
+    bool addEnergyKwh_0_to_4294967(float value);
 
-    // /**
-    //  * @brief Set the total volatile organic compounds (TVOC) value in the packet.
-    //  * @param tvocPPB TVOC concentration in ppb.
-    //  */
-    // bool addTVOC(uint16_t tvocPPB);
+    bool addGasM3_0_to_16777(float value);
 
-    // /**
-    //  * @brief Set the atmospheric pressure value in the packet.
-    //  * @param pressureHpa Pressure in hPa.
-    //  */
-    // bool addPressure(float pressureHpa);
+    bool addGasM3_0_to_4294967(float value);
 
-    // /**
-    //  * @brief Set the weight measurement value in the packet.
-    //  * @param weightKg Weight in kilograms or grams depending on implementation.
-    //  */
-    // bool addWeight(float weightKg);
+    bool addGyroscopeDegreeSeconds(float value);
 
-    // /**
-    //  * @brief Set the volume measurement value in the packet.
-    //  * @param volumeLitres Volume in litres or cubic metres depending on implementation.
-    //  */
-    // bool addVolume(float volumeLitres);
+    bool addIlluminanceLux(float value);
 
-    // /**
-    //  * @brief Set a duration value in the packet.
-    //  * @param durationSeconds Duration in seconds or milliseconds depending on implementation.
-    //  */
-    // bool addDuration(uint32_t durationSeconds);
+    bool addMassKg(float value);
 
-    // /**
-    //  * @brief Set the speed measurement value in the packet.
-    //  * @param speedMetresPerSecond Speed in metres per second or km/h.
-    //  */
-    // bool addSpeed(float speedMetresPerSecond);
+    bool addMassLb(float value);
 
-    // /**
-    //  * @brief Set the ultraviolet (UV) index value in the packet.
-    //  * @param uvIndex UV index (unitless).
-    //  */
-    // bool addUV(float uvIndex);
+    bool addMoisturePercent_Resolution_1(uint8_t value);
 
-    // /**
-    //  * @brief Set a pulse count or heart rate value in the packet.
-    //  * @param pulseBPM Pulse count or heart rate in beats per minute.
-    //  */
-    // bool addPulse(uint32_t pulseBPM);
+    bool addMoisturePercent_Resolution_0_01(float value);
 
-    // /**
-    //  * @brief Set a generic floating-point value in the packet.
-    //  * @param valueFloat Arbitrary float value.
-    //  */
-    // bool addGenericFloat(float valueFloat);
+    bool addPm2_5UgM3(uint16_t value);
 
-    // /**
-    //  * @brief Set a generic unsigned integer value in the packet.
-    //  * @param valueUint Arbitrary unsigned integer value.
-    //  */
-    // bool addGenericUint(uint32_t valueUint);
+    bool addPm10UgM3(uint16_t value);
 
-    // /**
-    //  * @brief Set a generic signed integer value in the packet.
-    //  * @param valueInt Arbitrary signed integer value.
-    //  */
-    // bool addGenericInt(int32_t valueInt);
+    bool addPower_neg21474836_to_21474836_resolution_0_01(float value);
+
+    bool addPower_0_to_167772_resolution_0_01(float value);
+
+    bool addPrecipitationMm(float value);
+
+    bool addPressureHpa(float value);
+
+    bool addRotationDegrees(float value);
+
+    bool addSpeedMs(float value);
+
+    bool addTvocUgm3(uint16_t value);
+
+    bool addVoltage_0_to_6550_resolution_0_1(float value);
+
+    bool addVoltage_0_to_65_resolution_0_001(float value);
+
+    bool addVolumeLitres_0_to_6555_resolution_0_1(float value);
+
+    bool addVolumeLitres_0_to_65550_resolution_1(uint16_t value);
+
+    bool addVolumeLitres_0_to_4294967_resolution_0_001(float value);
+
+    bool addVolumeStorageLitres(float value);
+
+    bool addVolumeFlowRateM3hr(float value);
+
+    bool addUvIndex(float value);
+
+    bool addWaterLitres(float value);
 
 private:
     BaseDevice _baseDevice;

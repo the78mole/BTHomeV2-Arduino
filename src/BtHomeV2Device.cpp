@@ -17,39 +17,31 @@ BtHomeV2Device::BtHomeV2Device(const char *shortName, const char *completeName, 
 {
 }
 
+bool BtHomeV2Device::addTemperature_neg44_to_44_Resolution_0_35(float degreesCelsius)
+{
+    return _baseDevice.addFloat(temperature_int8_scale_0_35, degreesCelsius);
+}
+bool BtHomeV2Device::addTemperature_neg127_to_127_Resolution_1(int8_t degreesCelsius)
+{
+    return _baseDevice.addFloat(temperature_int8, degreesCelsius);
+}
+bool BtHomeV2Device::addTemperature_neg3276_to_3276_Resolution_0_1(float degreesCelsius)
+{
+    return _baseDevice.addFloat(temperature_int16_scale_0_1, degreesCelsius);
+}
+bool BtHomeV2Device::addTemperature_neg327_to_327_Resolution_0_01(float degreesCelsius)
+{
+    return _baseDevice.addFloat(temperature_int16_scale_0_01, degreesCelsius);
+}
+
 bool BtHomeV2Device::addDistanceMetres(float metres)
 {
     return _baseDevice.addFloat(distance_metre, metres);
 }
 
-bool BtHomeV2Device::addDistanceMillimetres(float millimetres)
+bool BtHomeV2Device::addDistanceMillimetres(uint16_t millimetres)
 {
-    return _baseDevice.addFloat(distance_millimetre, millimetres);
-}
-
-bool BtHomeV2Device::addTemperature(float degreesCelsius, TemperatureRangeResolution rangeResolution)
-{
-
-    switch (rangeResolution)
-    {
-    case RANGE_44_RESOLUTION_0_35:
-    {
-        return _baseDevice.addFloat(temperature_int8_scale_0_35, degreesCelsius);
-    }
-    case RANGE_127_RESOLUTION_1:
-    {
-        return _baseDevice.addFloat(temperature_int8, degreesCelsius);
-    }
-    case RANGE_3276_RESOLUTION_0_1:
-    {
-        return _baseDevice.addFloat(temperature_int16_scale_0_1, degreesCelsius);
-    }
-    case RANGE_327_RESOLUTION_0_01:
-    {
-        return _baseDevice.addFloat(temperature_int16_scale_0_01, degreesCelsius);
-    }
-    }
-    return false;
+    return _baseDevice.addUnsignedInteger(distance_millimetre, millimetres);
 }
 
 bool BtHomeV2Device::addCount_0_4294967295(uint32_t count)
@@ -80,31 +72,14 @@ bool BtHomeV2Device::addCount_neg2147483648_2147483647(int32_t count)
     return _baseDevice.addSignedInteger(count_int32, static_cast<uint64_t>(count));
 }
 
-bool BtHomeV2Device::addHumidity_0_01(float humidityPercent)
+bool BtHomeV2Device::addHumidityPercent_Resolution_0_01(float humidityPercent)
 {
     return _baseDevice.addFloat(humidity_uint16, humidityPercent);
 }
 
-bool BtHomeV2Device::addHumidity_0_1(float humidityPercent)
+bool BtHomeV2Device::addHumidityPercent_Resolution_1(uint8_t humidityPercent)
 {
     return _baseDevice.addFloat(humidity_uint8, humidityPercent);
-}
-
-bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResolution)
-{
-
-    switch (rangeResolution)
-    {
-    case RANGE_65_RESOLUTION_0_001:
-    {
-        return _baseDevice.addFloat(voltage_0_001, voltage);
-    }
-    case RANGE_65535_RESOLUTION_0_1:
-    {
-        return _baseDevice.addFloat(voltage_0_1, voltage);
-    }
-    }
-    return false;
 }
 
 bool BtHomeV2Device::addText(const char text[])
@@ -267,12 +242,197 @@ bool BtHomeV2Device::setWindowState(Window_Sensor_Status windowState)
     return _baseDevice.addState(window, windowState);
 }
 
-bool BtHomeV2Device::eventButton(Button_Event_Status buttonEvent)
+bool BtHomeV2Device::setButtonEvent(Button_Event_Status buttonEvent)
 {
     return _baseDevice.addState(button, buttonEvent);
 }
 
-bool BtHomeV2Device::eventDimmer(Dimmer_Event_Status dimmerEvent, uint8_t steps)
+bool BtHomeV2Device::setDimmerEvent(Dimmer_Event_Status dimmerEvent, uint8_t steps)
 {
     return _baseDevice.addState(dimmer, dimmerEvent, steps);
+}
+
+bool BtHomeV2Device::addAccelerationMs2(float value)
+{
+    return _baseDevice.addFloat(acceleration, value);
+}
+
+bool BtHomeV2Device::addChannel(uint8_t value)
+{
+    return _baseDevice.addUnsignedInteger(channel, value);
+}
+
+bool BtHomeV2Device::addCo2Ppm(uint16_t value)
+{
+    return _baseDevice.addUnsignedInteger(co2, value);
+}
+
+bool BtHomeV2Device::addConductivityMicrosecondsPerCm(float value)
+{
+    return _baseDevice.addFloat(conductivity, value);
+}
+
+bool BtHomeV2Device::addCurrentAmps_neg32_to_32(float value)
+{
+    return _baseDevice.addFloat(current_int16, value);
+}
+
+bool BtHomeV2Device::addCurrentAmps_0_65(float value)
+{
+    return _baseDevice.addFloat(current_uint16, value);
+}
+
+bool BtHomeV2Device::addDewPointDegreesCelsius(float value)
+{
+    return _baseDevice.addFloat(dewpoint, value);
+}
+
+bool BtHomeV2Device::addDirectionDegrees(float value)
+{
+    return _baseDevice.addFloat(direction, value);
+}
+
+bool BtHomeV2Device::addDurationSeconds(float value)
+{
+    return _baseDevice.addFloat(duration_uint24, value);
+}
+
+bool BtHomeV2Device::addEnergyKwh_0_to_16777(float value)
+{
+    return _baseDevice.addFloat(energy_uint24, value);
+}
+
+bool BtHomeV2Device::addEnergyKwh_0_to_4294967(float value)
+{
+    return _baseDevice.addFloat(energy_uint32, value);
+}
+
+bool BtHomeV2Device::addGasM3_0_to_16777(float value)
+{
+    return _baseDevice.addFloat(gas_uint24, value);
+}
+
+bool BtHomeV2Device::addGasM3_0_to_4294967(float value)
+{
+    return _baseDevice.addFloat(gas_uint32, value);
+}
+
+bool BtHomeV2Device::addGyroscopeDegreeSeconds(float value)
+{
+    return _baseDevice.addFloat(gyroscope, value);
+}
+
+bool BtHomeV2Device::addIlluminanceLux(float value)
+{
+    return _baseDevice.addFloat(illuminance, value);
+}
+
+bool BtHomeV2Device::addMassKg(float value)
+{
+    return _baseDevice.addFloat(mass_kg, value);
+}
+
+bool BtHomeV2Device::addMassLb(float value)
+{
+    return _baseDevice.addFloat(mass_lb, value);
+}
+
+bool BtHomeV2Device::addMoisturePercent_Resolution_1(uint8_t value)
+{
+    return _baseDevice.addUnsignedInteger(moisture_uint8, value);
+}
+
+bool BtHomeV2Device::addMoisturePercent_Resolution_0_01(float value)
+{
+    return _baseDevice.addFloat(moisture_uint16, value);
+}
+
+bool BtHomeV2Device::addPm2_5UgM3(uint16_t value)
+{
+    return _baseDevice.addUnsignedInteger(pm2_5, value);
+}
+
+bool BtHomeV2Device::addPm10UgM3(uint16_t value)
+{
+    return _baseDevice.addUnsignedInteger(pm10, value);
+}
+
+bool BtHomeV2Device::addPower_neg21474836_to_21474836_resolution_0_01(float value)
+{
+    return _baseDevice.addFloat(power_int32, value);
+}
+
+bool BtHomeV2Device::addPower_0_to_167772_resolution_0_01(float value)
+{
+    return _baseDevice.addFloat(power_uint24, value);
+}
+
+bool BtHomeV2Device::addPrecipitationMm(float value)
+{
+    return _baseDevice.addFloat(precipitation, value);
+}
+
+bool BtHomeV2Device::addPressureHpa(float value)
+{
+    return _baseDevice.addFloat(pressure, value);
+}
+
+bool BtHomeV2Device::addRotationDegrees(float value)
+{
+    return _baseDevice.addFloat(rotation, value);
+}
+
+bool BtHomeV2Device::addSpeedMs(float value)
+{
+    return _baseDevice.addFloat(speed, value);
+}
+
+bool BtHomeV2Device::addTvocUgm3(uint16_t value)
+{
+    return _baseDevice.addUnsignedInteger(tvoc, value);
+}
+
+bool BtHomeV2Device::addVoltage_0_to_6550_resolution_0_1(float value)
+{
+    return _baseDevice.addFloat(voltage_0_1, value);
+}
+
+bool BtHomeV2Device::addVoltage_0_to_65_resolution_0_001(float value)
+{
+    return _baseDevice.addFloat(voltage_0_001, value);
+}
+
+bool BtHomeV2Device::addVolumeLitres_0_to_6555_resolution_0_1(float value)
+{
+    return _baseDevice.addFloat(volume_uint16_scale_0_1, value);
+}
+
+bool BtHomeV2Device::addVolumeLitres_0_to_65550_resolution_1(uint16_t value)
+{
+    return _baseDevice.addUnsignedInteger(volume_uint16_scale_1, value);
+}
+
+bool BtHomeV2Device::addVolumeLitres_0_to_4294967_resolution_0_001(float value)
+{
+    return _baseDevice.addFloat(volume_uint32, value);
+}
+
+bool BtHomeV2Device::addVolumeStorageLitres(float value)
+{
+    return _baseDevice.addFloat(volume_storage, value);
+}
+
+bool BtHomeV2Device::addVolumeFlowRateM3hr(float value)
+{
+    return _baseDevice.addFloat(volume_flow_rate, value);
+}
+
+bool BtHomeV2Device::addUvIndex(float value)
+{
+    return _baseDevice.addFloat(UV_index, value);
+}
+
+bool BtHomeV2Device::addWaterLitres(float value)
+{
+    return _baseDevice.addFloat(water_litre, value);
 }

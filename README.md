@@ -63,44 +63,33 @@ The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not
 Refer to the directory `./examples`  for specific library implementations.
 
 - esphome proxy configuration
-- NimBLE BLE Library 
+- NimBLE BLE Library  [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
 
-### NimBLE Example
-Nimble Repository: https://github.com/h2zero/NimBLE-Arduino
-
-Example file: [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
+## Usage
 
 ```cpp
-  // #include <BtHomeV2Device.h>
+  // Short or long name sent based on packet size
+  BtHomeV2Device btHome("short_name", "My longer device name", false);
 
-  // Build advertising data
-  BtHomeV2Device btHome("DIY-sensor", "My DIY Sensor", false);
-  btHome.addCount_0_255(22);
-  uint8_t buffer[MAX_PAYLOAD_SIZE];
-  size_t size = btHome.getAdvertisementData(buffer);
+  // Add humidity
+  btHome.addHumidityPercent_Resolution_0_01(50.55f);
 
-  // Generated advertisement data:
-  // 02 01 06 0e 09 4d 79 20 44 49 59 20 53 65 6e 73 6f 72 06 16 d2 fc 40 09 16
-  // 02 01 06 (<- Initial Flags)  
-  // 0e (<- Length) 09 (<- Complete Name) 4d 79 20 44 49 59 20 53 65 6e 73 6f 72 (<- My DIY Sensor) 
-  // 06 (<- Length) 16 (<- Service Data ) d2 fc ( <- BTHome UUID ) 
-  // 40 ( <- BTHomeV2 / Encryption / Trigger Device ) 09 (<- Count 0-255 )  16 (<-'25')
+  // Add Temperature
+  btHome.addTemperature_neg127_to_127_Resolution_1(-22.0f);
 
-  // Setting up the BLE
+  // Set Battery State
+  btHome.setBatteryState(BATTERY_STATE_LOW);
 
-  NimBLEDevice::init("");
-  NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
-  NimBLEAdvertisementData pAdvData = BLEAdvertisementData(); 
-  std::vector<uint8_t> data(buffer, buffer + size); // convert the buffer to something NimBLE takes 
-  pAdvData.addData(data);
-  pAdvertising->setAdvertisementData(pAdvData);
-  pAdvertising->setConnectableMode(0);
-  Serial.println("Starting advertising...");
-  pAdvertising->start();
-  delay(1000);
-  pAdvertising->stop();
-  delay(1000);
-  Serial.println("Advertising data sent.");
+  // Set battery percentage 
+  btHome.addBatteryPercentage(22);
+
+  uint8_t advertisementData[MAX_PAYLOAD_SIZE];
+  size_t size = btHome.getAdvertisementData(advertisementData);
+
+
+  // Set the advertisement data on BLE
+  sendAdvertisement(advertisementData, size); // <- look in the example files for this method
+
 ```
 
 ## Troubleshooting 

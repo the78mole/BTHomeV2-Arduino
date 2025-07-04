@@ -33,7 +33,7 @@ bool BaseDevice::hasEnoughSpace(BtHomeState sensor)
 {
   // minimum space is needed for the short name, but if there is spare room then we can use the full name
   uint8_t shortNameSize = strlen(_shortName) + 2; // 1 byte for the name id and one for the size byte
-  return (_sensorDataIdx + sensor.byteCount + 1) <= _maximumMeasurementBytes;
+  return (_sensorDataIdx + sensor.byteCount + 2) <= _maximumMeasurementBytes;
 }
 
 /// @brief Add a state or step value to the sensor data packet.
