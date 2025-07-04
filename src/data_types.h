@@ -81,7 +81,7 @@ const BtHomeType precipitation = {0x5F, 0.1f, 2, false};
 const BtHomeType pressure = {0x04, 0.01f, 3, false};
 const BtHomeType rotation = {0x3F, 0.1f, 2, true};
 const BtHomeType speed = {0x44, 0.01f, 2, false};
-const BtHomeType timestamp = {0x50, 1.0f, 5, false};
+const BtHomeType timestamp = {0x50, 1.0f, 4, false};
 const BtHomeType tvoc = {0x13, 1.0f, 2, false};
 
 const BtHomeType volume_uint32 = {0x4E, 0.001f, 4, true};
@@ -91,8 +91,9 @@ const BtHomeType volume_storage = {0x55, 0.001f, 4, true};
 const BtHomeType volume_flow_rate = {0x49, 0.001f, 2, false};
 const BtHomeType UV_index = {0x46, 0.1f, 1, false};
 const BtHomeType water_litre = {0x4F, 0.001f, 4, true};
-// text (0x53) requires custom serialization
-// raw (0x54) and text (0x53) require custom serialization, not included here
+const BtHomeType time_type = {0x50, 1.0f, 4, false };
+
+// raw (0x54)  require custom serialization
 
 const BtHomeState battery_state = {0x15, 1}; // Battery state, 1 byte, 0 = normal, 1 = low
 const BtHomeState battery_charging = {0x16, 1};

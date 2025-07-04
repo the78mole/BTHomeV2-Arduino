@@ -111,6 +111,10 @@ bool BtHomeV2Device::addText(const char text[]){
     return _baseDevice.addRaw(0x53, (uint8_t*)text, strlen(text));
 }
 
+bool BtHomeV2Device::addTime(uint32_t secondsSinceEpoch){
+    return _baseDevice.addUnsignedInteger(timestamp, secondsSinceEpoch);
+}
+
 bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)
 {
     return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);

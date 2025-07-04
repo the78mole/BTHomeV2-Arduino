@@ -89,6 +89,11 @@ public:
     bool addBatteryPercentage(uint8_t batteryPercentage);
 
     bool addText(const char text[]);
+    
+    /// @brief Add seconds since the unix epoch 
+    /// @param secondsSinceUnixEpoch - Seconds since the unix epoch
+    /// @return 
+    bool addTime(uint32_t secondsSinceUnixEpoch);
 
     bool setBatteryState(BATTERY_STATE batteryState);
     bool setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState);
