@@ -1,5 +1,5 @@
 # BTHomeV2-Arduino
-
+[![arduino-library-badge](https://www.ardu-badge.com/badge/BTHomeV2-Arduino.svg?)](https://www.ardu-badge.com/BTHomeV2-Arduino)
 ## BTHome is an open standard for broadcasting sensor data and button presses over Bluetooth LE 
 
 [<img src="./assets/bthome-logo.png" alt="BTHome Logo" height="100"/>](https://bthome.io/)
