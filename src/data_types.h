@@ -16,7 +16,7 @@ struct BtHomeState
 
 struct BtHomeType : public BtHomeState
 {
-    float scale; // Multiplier to apply before serializing
+    float scale;       // Multiplier to apply before serializing
     bool signed_value; // true if value is signed, false if unsigned
 
     BtHomeType(uint8_t id, float scale, uint8_t byteCount, bool signed_value)
@@ -29,7 +29,6 @@ struct BtHomeType : public BtHomeState
 };
 
 // Now BtHomeType has 'id' from BtHomeState, plus its own fields.
-
 
 const BtHomeType temperature_int8 = {0x57, 1.0f, 1, true};
 const BtHomeType temperature_int8_scale_0_35 = {0x58, 0.35f, 1, true};
@@ -95,8 +94,7 @@ const BtHomeType water_litre = {0x4F, 0.001f, 4, true};
 // text (0x53) requires custom serialization
 // raw (0x54) and text (0x53) require custom serialization, not included here
 
-
-const BtHomeState battery_state = {0x15,1}; // Battery state, 1 byte, 0 = normal, 1 = low
+const BtHomeState battery_state = {0x15, 1}; // Battery state, 1 byte, 0 = normal, 1 = low
 const BtHomeState battery_charging = {0x16, 1};
 const BtHomeState carbon_monoxide = {0x17, 1};
 const BtHomeState cold = {0x18, 1};
@@ -125,174 +123,172 @@ const BtHomeState tamper = {0x2B, 1};
 const BtHomeState vibration = {0x2C, 1};
 const BtHomeState window = {0x2D, 1};
 
-enum Battery_Sensor_Status 
+enum Battery_Sensor_Status
 {
-    Battery_Normal = 0,    // False = Normal
-    Battery_Low    = 1     // True  = Low
+    Battery_Sensor_Status_Normal = 0,
+    Battery_Sensor_Status_Low = 1
 };
 
-enum Battery_Charging_Sensor_Status 
+enum Battery_Charging_Sensor_Status
 {
-    Battery_Not_Charging = 0,  // False = Not Charging
-    Battery_Charging     = 1   // True  = Charging
+    Battery_Charging_Sensor_Status_Not_Charging = 0,
+    Battery_Charging_Sensor_Status_Charging = 1
 };
 
-enum Carbon_Monoxide_Sensor_Status 
+enum Carbon_Monoxide_Sensor_Status
 {
-    Carbon_Monoxide_Not_Detected = 0,  // False = Not detected
-    Carbon_Monoxide_Detected     = 1   // True  = Detected
+    Carbon_Monoxide_Sensor_Status_Not_Detected = 0,
+    Carbon_Monoxide_Sensor_Status_Detected = 1
 };
 
-enum Cold_Sensor_Status 
+enum Cold_Sensor_Status
 {
-    Cold_Normal = 0,  // False = Normal
-    Cold_Cold   = 1   // True  = Cold
+    Cold_Sensor_Status_Normal = 0,
+    Cold_Sensor_Status_Cold = 1
 };
 
-enum Connectivity_Sensor_Status 
+enum Connectivity_Sensor_Status
 {
-    Connectivity_Disconnected = 0,  // False = Disconnected
-    Connectivity_Connected    = 1   // True  = Connected
+    Connectivity_Sensor_Status_Disconnected = 0,
+    Connectivity_Sensor_Status_Connected = 1
 };
 
-enum Door_Sensor_Status 
+enum Door_Sensor_Status
 {
-    Door_Closed = 0,  // False = Closed
-    Door_Open   = 1   // True  = Open
+    Door_Sensor_Status_Closed = 0,
+    Door_Sensor_Status_Open = 1
 };
 
-enum Garage_Door_Sensor_Status 
+enum Garage_Door_Sensor_Status
 {
-    Garage_Door_Closed = 0,  // False = Closed
-    Garage_Door_Open   = 1   // True  = Open
+    Garage_Door_Sensor_Status_Closed = 0,
+    Garage_Door_Sensor_Status_Open = 1
 };
 
-enum Gas_Sensor_Status 
+enum Gas_Sensor_Status
 {
-    Gas_Clear    = 0,  // False = Clear
-    Gas_Detected = 1   // True  = Detected
+    Gas_Sensor_Status_Clear = 0,
+    Gas_Sensor_Status_Detected = 1
 };
 
-enum Generic_Sensor_Status 
+enum Generic_Sensor_Status
 {
-    Generic_Off = 0,   // False = Off
-    Generic_On  = 1    // True  = On
+    Generic_Sensor_Status_Off = 0,
+    Generic_Sensor_Status_On = 1
 };
 
-enum Heat_Sensor_Status 
+enum Heat_Sensor_Status
 {
-    Heat_Normal = 0,  // False = Normal
-    Heat_Hot    = 1   // True  = Hot
+    Heat_Sensor_Status_Normal = 0,
+    Heat_Sensor_Status_Hot = 1
 };
 
-enum Light_Sensor_Status 
+enum Light_Sensor_Status
 {
-    Light_No_Light  = 0,  // False = No light
-    Light_Detected  = 1   // True  = Light detected
+    Light_Sensor_Status_No_Light = 0,
+    Light_Sensor_Status_Detected = 1
 };
 
-enum Lock_Sensor_Status 
+enum Lock_Sensor_Status
 {
-    Lock_Locked   = 0,  // False = Locked
-    Lock_Unlocked = 1   // True  = Unlocked
+    Lock_Sensor_Status_Locked = 0,
+    Lock_Sensor_Status_Unlocked = 1
 };
 
-enum Moisture_Sensor_Status 
+enum Moisture_Sensor_Status
 {
-    Moisture_Dry = 0,   // False = Dry
-    Moisture_Wet = 1    // True  = Wet
+    Moisture_Sensor_Status_Dry = 0,
+    Moisture_Sensor_Status_Wet = 1
 };
 
-enum Motion_Sensor_Status 
+enum Motion_Sensor_Status
 {
-    Motion_Clear    = 0,  // False = Clear
-    Motion_Detected = 1   // True  = Detected
+    Motion_Sensor_Status_Clear = 0,
+    Motion_Sensor_Status_Detected = 1
 };
 
-enum Moving_Sensor_Status 
+enum Moving_Sensor_Status
 {
-    Moving_Not_Moving = 0,  // False = Not moving
-    Moving_Moving     = 1   // True  = Moving
+    Moving_Sensor_Status_Not_Moving = 0,
+    Moving_Sensor_Status_Moving = 1
 };
 
-enum Occupancy_Sensor_Status 
+enum Occupancy_Sensor_Status
 {
-    Occupancy_Clear    = 0,  // False = Clear
-    Occupancy_Detected = 1   // True  = Detected
+    Occupancy_Sensor_Status_Clear = 0,
+    Occupancy_Sensor_Status_Detected = 1
 };
 
-enum Opening_Sensor_Status 
+enum Opening_Sensor_Status
 {
-    Opening_Closed = 0,  // False = Closed
-    Opening_Open   = 1   // True  = Open
+    Opening_Sensor_Status_Closed = 0,
+    Opening_Sensor_Status_Open = 1
 };
 
-enum Plug_Sensor_Status 
+enum Plug_Sensor_Status
 {
-    Plug_Unplugged = 0,  // False = Unplugged
-    Plug_Plugged_In = 1  // True  = Plugged in
+    Plug_Sensor_Status_Unplugged = 0,
+    Plug_Sensor_Status_Plugged_In = 1
 };
 
-enum Power_Sensor_Status 
+enum Power_Sensor_Status
 {
-    Power_Off = 0,  // False = Off
-    Power_On  = 1   // True  = On
+    Power_Sensor_Status_Off = 0,
+    Power_Sensor_Status_On = 1
 };
 
-enum Presence_Sensor_Status 
+enum Presence_Sensor_Status
 {
-    Presence_Away = 0,  // False = Away
-    Presence_Home = 1   // True  = Home
+    Presence_Sensor_Status_Away = 0,
+    Presence_Sensor_Status_Home = 1
 };
 
-enum Problem_Sensor_Status 
+enum Problem_Sensor_Status
 {
-    Problem_OK      = 0,  // False = OK
-    Problem_Problem = 1   // True  = Problem
+    Problem_Sensor_Status_OK = 0,
+    Problem_Sensor_Status_Problem = 1
 };
 
-enum Running_Sensor_Status 
+enum Running_Sensor_Status
 {
-    Running_Not_Running = 0,  // False = Not Running
-    Running_Running     = 1   // True  = Running
+    Running_Sensor_Status_Not_Running = 0,
+    Running_Sensor_Status_Running = 1
 };
 
-enum Safety_Sensor_Status 
+enum Safety_Sensor_Status
 {
-    Safety_Unsafe = 0,  // False = Unsafe
-    Safety_Safe   = 1   // True  = Safe
+    Safety_Sensor_Status_Unsafe = 0,
+    Safety_Sensor_Status_Safe = 1
 };
 
-enum Smoke_Sensor_Status 
+enum Smoke_Sensor_Status
 {
-    Smoke_Clear    = 0,  // False = Clear
-    Smoke_Detected = 1   // True  = Detected
+    Smoke_Sensor_Status_Clear = 0,
+    Smoke_Sensor_Status_Detected = 1
 };
 
-enum Sound_Sensor_Status 
+enum Sound_Sensor_Status
 {
-    Sound_Clear    = 0,  // False = Clear
-    Sound_Detected = 1   // True  = Detected
+    Sound_Sensor_Status_Clear = 0,
+    Sound_Sensor_Status_Detected = 1
 };
 
-enum Tamper_Sensor_Status 
+enum Tamper_Sensor_Status
 {
-    Tamper_Off = 0,  // False = Off
-    Tamper_On  = 1   // True  = On
+    Tamper_Sensor_Status_Off = 0,
+    Tamper_Sensor_Status_On = 1
 };
 
-enum Vibration_Sensor_Status 
+enum Vibration_Sensor_Status
 {
-    Vibration_Clear    = 0,  // False = Clear
-    Vibration_Detected = 1   // True  = Detected
+    Vibration_Sensor_Status_Clear = 0,
+    Vibration_Sensor_Status_Detected = 1
 };
 
-enum Window_Sensor_Status 
+enum Window_Sensor_Status
 {
-    Window_Closed = 0,  // False = Closed
-    Window_Open   = 1   // True  = Open
+    Window_Sensor_Status_Closed = 0,
+    Window_Sensor_Status_Open = 1
 };
-
 
 #endif // BT_HOME_DATA_TYPES_H
-

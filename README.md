@@ -149,33 +149,33 @@ Quite a few things to implement, but hopefully will get through them all.
 |        |           |                       |          |                                                                                    |
 |        | Object id | Property              |          |                                                                                    |
 | Binary | 0x15      | battery  (normal/low) | Done     |                                                                                    |
-| Binary | 0x16      | battery charging      |          |                                                                                    |
-| Binary | 0x17      | carbon monoxide       |          |                                                                                    |
-| Binary | 0x18      | cold                  |          |                                                                                    |
-| Binary | 0x19      | connectivity          |          |                                                                                    |
-| Binary | 0x1A      | door                  |          |                                                                                    |
-| Binary | 0x1B      | garage door           |          |                                                                                    |
-| Binary | 0x1C      | gas                   |          |                                                                                    |
-| Binary | 0x0F      | generic boolean       |          |                                                                                    |
-| Binary | 0x1D      | heat                  |          |                                                                                    |
-| Binary | 0x1E      | light                 |          |                                                                                    |
-| Binary | 0x1F      | lock                  |          |                                                                                    |
-| Binary | 0x20      | moisture              |          |                                                                                    |
-| Binary | 0x21      | motion                |          |                                                                                    |
-| Binary | 0x22      | moving                | Next     |                                                                                    |
-| Binary | 0x23      | occupancy             |          |                                                                                    |
-| Binary | 0x11      | opening               |          |                                                                                    |
-| Binary | 0x24      | plug                  |          |                                                                                    |
-| Binary | 0x10      | power                 |          |                                                                                    |
-| Binary | 0x25      | presence              | Next     |                                                                                    |
-| Binary | 0x26      | problem               |          |                                                                                    |
-| Binary | 0x27      | running               |          |                                                                                    |
-| Binary | 0x28      | safety                |          |                                                                                    |
-| Binary | 0x29      | smoke                 |          |                                                                                    |
-| Binary | 0x2A      | sound                 |          |                                                                                    |
-| Binary | 0x2B      | tamper                |          |                                                                                    |
-| Binary | 0x2C      | vibration             |          |                                                                                    |
-| Binary | 0x2D      | window                |          |                                                                                    |
+| Binary | 0x16      | battery charging      | Done     |                                                                                    |
+| Binary | 0x17      | carbon monoxide       | Done     |                                                                                    |
+| Binary | 0x18      | cold                  | Done     |                                                                                    |
+| Binary | 0x19      | connectivity          | Done     |                                                                                    |
+| Binary | 0x1A      | door                  | Done     |                                                                                    |
+| Binary | 0x1B      | garage door           | Done     |                                                                                    |
+| Binary | 0x1C      | gas                   | Done     |                                                                                    |
+| Binary | 0x0F      | generic boolean       | Done     |                                                                                    |
+| Binary | 0x1D      | heat                  | Done     |                                                                                    |
+| Binary | 0x1E      | light                 | Done     |                                                                                    |
+| Binary | 0x1F      | lock                  | Done     |                                                                                    |
+| Binary | 0x20      | moisture              | Done     |                                                                                    |
+| Binary | 0x21      | motion                | Done     |                                                                                    |
+| Binary | 0x22      | moving                | Done     |                                                                                    |
+| Binary | 0x23      | occupancy             | Done     |                                                                                    |
+| Binary | 0x11      | opening               | Done     |                                                                                    |
+| Binary | 0x24      | plug                  | Done     |                                                                                    |
+| Binary | 0x10      | power                 | Done     |                                                                                    |
+| Binary | 0x25      | presence              | Done     |                                                                                    |
+| Binary | 0x26      | problem               | Done     |                                                                                    |
+| Binary | 0x27      | running               | Done     |                                                                                    |
+| Binary | 0x28      | safety                | Done     |                                                                                    |
+| Binary | 0x29      | smoke                 | Done     |                                                                                    |
+| Binary | 0x2A      | sound                 | Done     |                                                                                    |
+| Binary | 0x2B      | tamper                | Done     |                                                                                    |
+| Binary | 0x2C      | vibration             | Done     |                                                                                    |
+| Binary | 0x2D      | window                | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
 |        |           |                       |          |                                                                                    |
 |        |           |                       |          |                                                                                    |
