@@ -272,7 +272,7 @@ bool BtHomeV2Device::eventButton(Button_Event_Status buttonEvent)
     return _baseDevice.addState(button, buttonEvent);
 }
 
-bool BtHomeV2Device::eventDimmer(Dimmer_Event_Status dimmerEvent)
+bool BtHomeV2Device::eventDimmer(Dimmer_Event_Status dimmerEvent, uint8_t steps)
 {
     return _baseDevice.addState(dimmer, dimmerEvent);
 }

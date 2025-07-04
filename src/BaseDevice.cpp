@@ -48,12 +48,23 @@ bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
     return false;
   }
 
-  _sensorData[_sensorDataIdx] = sensor.id;
-  _sensorDataIdx++;
-  _sensorData[_sensorDataIdx] = static_cast<byte>(state & 0xff);
-  _sensorDataIdx++;
-
+  _sensorData[_sensorDataIdx++] = sensor.id;
+  _sensorData[_sensorDataIdx++] = state;
   return true;
+}
+
+/// @brief Add a state or step value to the sensor data packet.
+/// @param sensor
+/// @param state
+/// @param steps
+/// @return
+bool BaseDevice::addState(BtHomeState sensor, uint8_t state, uint8_t steps)
+{
+  if (addState(sensor, state))
+  {
+    _sensorData[_sensorDataIdx++] = steps;
+  }
+  return false;
 }
 
 bool BaseDevice::addUnsignedInteger(BtHomeType sensor, uint64_t value)

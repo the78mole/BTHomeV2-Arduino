@@ -129,7 +129,7 @@ public:
     bool setWindowState(Window_Sensor_Status windowState);
 
     bool eventButton(Button_Event_Status buttonEvent);
-    bool eventDimmer(Dimmer_Event_Status dimmerEvent);
+    bool eventDimmer(Dimmer_Event_Status dimmerEvent, uint8_t steps);
 
     /**
      * @brief Set the temperature value in the packet.

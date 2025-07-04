@@ -8,6 +8,7 @@ class BaseDevice {
     size_t getAdvertisementData(uint8_t *buffer);
     void resetMeasurement();
     bool addState(BtHomeState,  uint8_t state);
+    bool addState(BtHomeState sensor, uint8_t state, uint8_t steps);
     bool addUnsignedInteger(BtHomeType sensor, uint64_t value);
     bool addSignedInteger(BtHomeType sensor, int64_t value);
     bool addFloat(BtHomeType sensor, float value);

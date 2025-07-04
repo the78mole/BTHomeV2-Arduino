@@ -125,7 +125,7 @@ const BtHomeState vibration = {0x2C, 1};
 const BtHomeState window = {0x2D, 1};
 
 const BtHomeState button = {0x3A, 1};
-const BtHomeState dimmer = {0x3C, 1};
+const BtHomeState dimmer = {0x3C, 2}; // Dimmer = state + steps
 
 enum Button_Event_Status
 {
