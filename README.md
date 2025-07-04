@@ -4,20 +4,61 @@
 
 [<img src="./assets/bthome-logo.png" alt="BTHome Logo" height="100"/>](https://bthome.io/)
 [<img src="./assets/ha-logo.png" alt="Home Assistant Logo" height="100" style="background-color:white;"/>](https://www.home-assistant.io/integrations/bthome/)
+[<img src="./assets/esphome.svg" alt="ESP Home" height="100" style="background-color:white;"/>](https://esphome.io)
 
+**BTHomeV2-Arduino can work with OR without ESPHome**
 
-Easily set up your device to emit BTHome BLE events via Bluetooth Low Energy (BLE);
+In fact it can work without HomeAssistant entirely if you are wanting to roll your own parser.
+
+The goal of this library is to easily develop devices that can send out BTHome events;
 More information on BTHome https://bthome.io/
 
 Check the progress table below to see if your requested feature is available. 
 Create an issue if you want to see something added.
 
-BTHome devices can be integrated into Home Assistant via ESP Home 
-https://www.home-assistant.io/integrations/bthome/
-
 BTHome makes it easier to add very low power sensing devices to your Home Network using standard Arduino devices such as any ESP32, or more specifically the ultra low power,  battery driven devices such as the FireBeetle 2 ESP32-C6.
 
-## Usage
+## Why use BTHome? 
+
+Power usage is the main consideration.
+
+A BLE Advertisement, which is used by BTHome:  
+- requires no connection.
+- is fast to send, only taking a few milliseconds. 
+- the wake, sense, send, sleep cycle can be less than a second
+
+Wifi is
+- slow to connect, 
+- requires handshakes and IP resolutions
+- uses MUCH more power 
+
+## Supported Platforms
+
+### Home Assistant + esphome
+
+Connection through ESPHome requires the use of a ESP32 as a Bluetooth BLE Proxy. I recommend using the *nodemcu32* as this *just works!*
+Get the `ESP32-WROOM-32U` with the external antenna for the best range.
+There is an example config for the BT proxy in the examples folder.
+
+After installing the [BTHome](https://www.home-assistant.io/integrations/bthome/) plugin, the devices should start showing up as discovered devices.
+
+### Home Assistant Only
+
+Similar to above, but instead of ESPHome, install a Bluetooth plugin for Home Assistant.
+After installing the [BTHome](https://www.home-assistant.io/integrations/bthome/) plugin, the devices should start showing up as discovered devices.
+
+## Development
+
+### Arduino IDE
+
+Arduino IDE is supported by this library, and has the best board support for Arduino. 
+
+### VSCode + PlatformIO
+
+This code should with PlatformIO too, but it's secondary to the Arduino IDE. 
+The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not supported by PlatformIO (at time of writing).
+
+## Example code and config
 
 Refer to the directory `./examples`  for specific library implementations.
 
