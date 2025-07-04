@@ -88,7 +88,7 @@ public:
      */
     bool addBatteryPercentage(uint8_t batteryPercentage);
 
-    bool addText(char text[]);
+    bool addText(const char text[]);
 
     bool setBatteryState(BATTERY_STATE batteryState);
     bool setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState);

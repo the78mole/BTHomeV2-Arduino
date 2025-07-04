@@ -134,7 +134,7 @@ Quite a few things to implement, but hopefully will get through them all.
 | Sensor | 0x58      | temperature           | Done     |                                                                                    |
 | Sensor | 0x45      | temperature           | Done     |                                                                                    |
 | Sensor | 0x02      | temperature           | Done     |                                                                                    |
-| Sensor | 0x53      | text                  | Next     |                                                                                    |
+| Sensor | 0x53      | text                  | Done     |                                                                                    |
 | Sensor | 0x50      | timestamp             | Next     |                                                                                    |
 | Sensor | 0x13      | tvoc                  |          |                                                                                    |
 | Sensor | 0x0C      | voltage               |          |                                                                                    |
