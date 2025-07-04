@@ -110,7 +110,7 @@ bool BaseDevice::pushBytes(uint64_t value2, BtHomeType sensor)
 /// @param value
 /// @param size
 /// @return
-bool BaseDevice::addRaw(BtHomeType sensor, uint8_t *value, uint8_t size)
+bool BaseDevice::addRaw(uint8_t sensorId, uint8_t *value, uint8_t size)
 {
   if ((_sensorDataIdx + size + 1) > _maximumMeasurementBytes)
   // TODO: see if this can be moved to the hasEnoughSpace function
@@ -118,7 +118,7 @@ bool BaseDevice::addRaw(BtHomeType sensor, uint8_t *value, uint8_t size)
     return false;
   }
 
-  _sensorData[_sensorDataIdx] = sensor.id;
+  _sensorData[_sensorDataIdx] = sensorId;
   _sensorDataIdx++;
   _sensorData[_sensorDataIdx] = static_cast<byte>(size & 0xff);
   _sensorDataIdx++;

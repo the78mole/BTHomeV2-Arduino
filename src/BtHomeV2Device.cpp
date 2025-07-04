@@ -107,6 +107,10 @@ bool BtHomeV2Device::addVoltage(float voltage, VoltageRangeResolution rangeResol
     return false;
 }
 
+bool BtHomeV2Device::addText(char text[]){
+    return _baseDevice.addRaw(0x53, (uint8_t*)text, strlen(text));
+}
+
 bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)
 {
     return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);

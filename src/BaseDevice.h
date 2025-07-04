@@ -11,7 +11,7 @@ class BaseDevice {
     bool addUnsignedInteger(BtHomeType sensor, uint64_t value);
     bool addSignedInteger(BtHomeType sensor, int64_t value);
     bool addFloat(BtHomeType sensor, float value);
-    bool addRaw(BtHomeType sensor, uint8_t *value, uint8_t size);
+    bool addRaw(uint8_t sensor, uint8_t *value, uint8_t size);
 
   private:
     bool pushBytes(uint64_t value2, BtHomeType sensor);
