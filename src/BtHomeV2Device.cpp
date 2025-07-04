@@ -111,3 +111,8 @@ bool BtHomeV2Device::addBatteryPercentage(uint8_t batteryPercentage)
 {
     return _baseDevice.addUnsignedInteger(battery_percentage, batteryPercentage);
 }
+
+bool BtHomeV2Device::setBatteryState(BATTERY_STATE batteryState)
+{
+    return _baseDevice.addState(battery_state, batteryState);
+}

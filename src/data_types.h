@@ -5,13 +5,31 @@
 #include <Arduino.h>
 #include <vector>
 
-struct BtHomeType
+// You can use struct inheritance in C++ to inherit properties.
+// For example, BtHomeType can inherit from BtHomeState if you want to reuse the 'id' field:
+
+struct BtHomeState
 {
-    uint8_t id;  // Type ID
-    float scale; // Multiplier to apply before serializing
+    uint8_t id;
     uint8_t byteCount;
-    bool signed_value; // true if value is signed, false if unsigned
 };
+
+struct BtHomeType : public BtHomeState
+{
+    float scale; // Multiplier to apply before serializing
+    bool signed_value; // true if value is signed, false if unsigned
+
+    BtHomeType(uint8_t id, float scale, uint8_t byteCount, bool signed_value)
+    {
+        this->id = id;
+        this->scale = scale;
+        this->byteCount = byteCount;
+        this->signed_value = signed_value;
+    }
+};
+
+// Now BtHomeType has 'id' from BtHomeState, plus its own fields.
+
 
 const BtHomeType temperature_int8 = {0x57, 1.0f, 1, true};
 const BtHomeType temperature_int8_scale_0_35 = {0x58, 0.35f, 1, true};
@@ -76,5 +94,8 @@ const BtHomeType UV_index = {0x46, 0.1f, 1, false};
 const BtHomeType water_litre = {0x4F, 0.001f, 4, true};
 // text (0x53) requires custom serialization
 // raw (0x54) and text (0x53) require custom serialization, not included here
+
+
+const BtHomeState battery_state = {0x15,1}; // Battery state, 1 byte, 0 = normal, 1 = low
 
 #endif // BT_HOME_DATA_TYPES_H

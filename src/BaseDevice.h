@@ -7,7 +7,7 @@ class BaseDevice {
     BaseDevice( const char* shortName,  const char* completeName, bool isTriggerBased);
     size_t getAdvertisementData(uint8_t *buffer);
     void resetMeasurement();
-    bool addState(BtHomeType sensor,  uint8_t state, uint8_t steps = 0);
+    bool addState(BtHomeState,  uint8_t state);
     bool addUnsignedInteger(BtHomeType sensor, uint64_t value);
     bool addSignedInteger(BtHomeType sensor, int64_t value);
     bool addFloat(BtHomeType sensor, float value);
@@ -20,7 +20,7 @@ class BaseDevice {
     byte _sensorData[BLE_ADVERT_MAX_LEN] = {0};
     char _shortName[MAX_LENGTH_SHORT_NAME];
     char _completeName[MAX_LENGTH_COMPLETE_NAME];
-    bool hasEnoughSpace(BtHomeType sensor);
+    bool hasEnoughSpace(BtHomeState sensor);
     template <typename T>
     bool addInteger(BtHomeType sensor, T value);
     bool _triggerDevice;

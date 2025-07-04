@@ -29,7 +29,7 @@ void BaseDevice::resetMeasurement()
 /// @details The sensor data packet has a maximum length defined by MEASUREMENT_MAX_LEN.
 /// @param size
 /// @return Returns true if there is enough space for the given size, false otherwise.
-bool BaseDevice::hasEnoughSpace(BtHomeType sensor)
+bool BaseDevice::hasEnoughSpace(BtHomeState sensor)
 {
   // minimum space is needed for the short name, but if there is spare room then we can use the full name
   uint8_t shortNameSize = strlen(_shortName) + 2; // 1 byte for the name id and one for the size byte
@@ -41,24 +41,18 @@ bool BaseDevice::hasEnoughSpace(BtHomeType sensor)
 /// @param state
 /// @param steps
 /// @return
-bool BaseDevice::addState(BtHomeType sensor, uint8_t state, uint8_t steps)
+bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
 {
-  if ((_sensorDataIdx + 2 + (steps > 0 ? 1 : 0)) <= _maximumMeasurementBytes)
+  if (!hasEnoughSpace(sensor))
   {
-    _sensorData[_sensorDataIdx] = sensor.id;
-    _sensorDataIdx++;
-    _sensorData[_sensorDataIdx] = static_cast<byte>(state & 0xff);
-    _sensorDataIdx++;
-    if (steps > 0)
-    {
-      _sensorData[_sensorDataIdx] = static_cast<byte>(steps & 0xff);
-      _sensorDataIdx++;
-    }
+    return false;
   }
-  else
-  {
-    return addState(sensor, state, steps);
-  }
+
+  _sensorData[_sensorDataIdx] = sensor.id;
+  _sensorDataIdx++;
+  _sensorData[_sensorDataIdx] = static_cast<byte>(state & 0xff);
+  _sensorDataIdx++;
+
   return true;
 }
 
@@ -151,24 +145,27 @@ size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
 
   bool canFitLongName = (completeNameLength - shortNameLength) + _sensorDataIdx <= _maximumMeasurementBytes;
 
-  if (canFitLongName) {
+  if (canFitLongName)
+  {
     buffer[idx++] = completeNameLength + 1; // Length of this AD field
     buffer[idx++] = COMPLETE_NAME;          // 0x09 for complete name
     memcpy(&buffer[idx], _completeName, completeNameLength);
     idx += completeNameLength;
-  } else {
+  }
+  else
+  {
     buffer[idx++] = shortNameLength + 1;
-    buffer[idx++] = SHORT_NAME;             // 0x08 for short name
+    buffer[idx++] = SHORT_NAME; // 0x08 for short name
     memcpy(&buffer[idx], _shortName, shortNameLength);
     idx += shortNameLength;
   }
 
   // 3. Service Data
-  size_t serviceDataStart = idx; // Remember where service data starts
+  size_t serviceDataStart = idx;          // Remember where service data starts
   buffer[idx++] = 3 + 1 + _sensorDataIdx; // Service Data length (UUID(2) + header(1) + sensorData)
-  buffer[idx++] = SERVICE_DATA;            // 0x16
-  buffer[idx++] = UUID1;                   // 0xD2
-  buffer[idx++] = UUID2;                   // 0xFC
+  buffer[idx++] = SERVICE_DATA;           // 0x16
+  buffer[idx++] = UUID1;                  // 0xD2
+  buffer[idx++] = UUID2;                  // 0xFC
 
   // Header (no encryption vs trigger based)
   if (_triggerDevice)
@@ -182,4 +179,3 @@ size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
 
   return idx; // Number of bytes written to buffer
 }
-

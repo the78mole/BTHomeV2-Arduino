@@ -89,106 +89,106 @@ I'm currently not looking at encryption. I might look at implementing it in the 
 
 Quite a few things to implement, but hopefully will get through them all.
 
-| Type   | Object id | Property          | Progress | Notes                                                                              |
-| ------ | --------- | ----------------- | -------- | ---------------------------------------------------------------------------------- |
-| Sensor | 0x51      | acceleration      |          |                                                                                    |
-| Sensor | 0x01      | battery           | Done     |                                                                                    |
-| Sensor | 0x60      | channel           |          |                                                                                    |
-| Sensor | 0x12      | co2               |          |                                                                                    |
-| Sensor | 0x56      | conductivity      |          |                                                                                    |
-| Sensor | 0x09      | count             | Done     |                                                                                    |
-| Sensor | 0x3D      | count             | Done     |                                                                                    |
-| Sensor | 0x3E      | count             | Done     |                                                                                    |
-| Sensor | 0x59      | count             | Done     | Not showing in HA                                                                  |
-| Sensor | 0x5A      | count             | Done     | Not showing in HA                                                                  |
-| Sensor | 0x5B      | count             | Done     | Not showing in HA                                                                  |
-| Sensor | 0x43      | current           |          |                                                                                    |
-| Sensor | 0x5D      | current           |          |                                                                                    |
-| Sensor | 0x08      | dewpoint          |          |                                                                                    |
-| Sensor | 0x5E      | direction         |          |                                                                                    |
-| Sensor | 0x40      | distance (mm)     | Done     | Showing as metres in HA https://github.com/Bluetooth-Devices/bthome-ble/issues/247 |
-| Sensor | 0x41      | distance (m)      | Done     |                                                                                    |
-| Sensor | 0x42      | duration          |          |                                                                                    |
-| Sensor | 0x4D      | energy            |          |                                                                                    |
-| Sensor | 0x0A      | energy            |          |                                                                                    |
-| Sensor | 0x4B      | gas               |          |                                                                                    |
-| Sensor | 0x4C      | gas               |          |                                                                                    |
-| Sensor | 0x52      | gyroscope         |          |                                                                                    |
-| Sensor | 0x03      | humidity          | Done     |                                                                                    |
-| Sensor | 0x2E      | humidity          | Done     |                                                                                    |
-| Sensor | 0x05      | illuminance       |          |                                                                                    |
-| Sensor | 0x06      | mass (kg)         |          |                                                                                    |
-| Sensor | 0x07      | mass (lb)         |          |                                                                                    |
-| Sensor | 0x14      | moisture          |          |                                                                                    |
-| Sensor | 0x2F      | moisture          |          |                                                                                    |
-| Sensor | 0x0D      | pm2.5             |          |                                                                                    |
-| Sensor | 0x0E      | pm10              |          |                                                                                    |
-| Sensor | 0x0B      | power             |          |                                                                                    |
-| Sensor | 0x5C      | power             |          |                                                                                    |
-| Sensor | 0x5F      | precipitation     |          |                                                                                    |
-| Sensor | 0x04      | pressure          |          |                                                                                    |
-| Sensor | 0x54      | raw               |          |                                                                                    |
-| Sensor | 0x3F      | rotation          |          |                                                                                    |
-| Sensor | 0x44      | speed             |          |                                                                                    |
-| Sensor | 0x57      | temperature       | Done     |                                                                                    |
-| Sensor | 0x58      | temperature       | Done     |                                                                                    |
-| Sensor | 0x45      | temperature       | Done     |                                                                                    |
-| Sensor | 0x02      | temperature       | Done     |                                                                                    |
-| Sensor | 0x53      | text              | Next     |                                                                                    |
-| Sensor | 0x50      | timestamp         | Next     |                                                                                    |
-| Sensor | 0x13      | tvoc              |          |                                                                                    |
-| Sensor | 0x0C      | voltage           |          |                                                                                    |
-| Sensor | 0x4A      | voltage           |          |                                                                                    |
-| Sensor | 0x4E      | volume            |          |                                                                                    |
-| Sensor | 0x47      | volume            |          |                                                                                    |
-| Sensor | 0x48      | volume            |          |                                                                                    |
-| Sensor | 0x55      | volume storage    |          |                                                                                    |
-| Sensor | 0x49      | volume flow rate  |          |                                                                                    |
-| Sensor | 0x46      | UV index          |          |                                                                                    |
-| Sensor | 0x4F      | water             |          |                                                                                    |
-|        |           |                   |          |                                                                                    |
-|        | Object id | Property          |          |                                                                                    |
-| Binary | 0x15      | battery           | Next     |                                                                                    |
-| Binary | 0x16      | battery charging  |          |                                                                                    |
-| Binary | 0x17      | carbon monoxide   |          |                                                                                    |
-| Binary | 0x18      | cold              |          |                                                                                    |
-| Binary | 0x19      | connectivity      |          |                                                                                    |
-| Binary | 0x1A      | door              |          |                                                                                    |
-| Binary | 0x1B      | garage door       |          |                                                                                    |
-| Binary | 0x1C      | gas               |          |                                                                                    |
-| Binary | 0x0F      | generic boolean   |          |                                                                                    |
-| Binary | 0x1D      | heat              |          |                                                                                    |
-| Binary | 0x1E      | light             |          |                                                                                    |
-| Binary | 0x1F      | lock              |          |                                                                                    |
-| Binary | 0x20      | moisture          |          |                                                                                    |
-| Binary | 0x21      | motion            |          |                                                                                    |
-| Binary | 0x22      | moving            | Next     |                                                                                    |
-| Binary | 0x23      | occupancy         |          |                                                                                    |
-| Binary | 0x11      | opening           |          |                                                                                    |
-| Binary | 0x24      | plug              |          |                                                                                    |
-| Binary | 0x10      | power             |          |                                                                                    |
-| Binary | 0x25      | presence          | Next     |                                                                                    |
-| Binary | 0x26      | problem           |          |                                                                                    |
-| Binary | 0x27      | running           |          |                                                                                    |
-| Binary | 0x28      | safety            |          |                                                                                    |
-| Binary | 0x29      | smoke             |          |                                                                                    |
-| Binary | 0x2A      | sound             |          |                                                                                    |
-| Binary | 0x2B      | tamper            |          |                                                                                    |
-| Binary | 0x2C      | vibration         |          |                                                                                    |
-| Binary | 0x2D      | window            |          |                                                                                    |
-|        |           |                   |          |                                                                                    |
-|        |           |                   |          |                                                                                    |
-|        |           |                   |          |                                                                                    |
-| button | 0x00      | None              |          |                                                                                    |
-| button | 0x01      | press             |          |                                                                                    |
-| button | 0x02      | double_press      |          |                                                                                    |
-| button | 0x03      | triple_press      |          |                                                                                    |
-| button | 0x04      | long_press        |          |                                                                                    |
-| button | 0x05      | long_double_press |          |                                                                                    |
-| button | 0x06      | long_triple_press |          |                                                                                    |
-| button | 0x80      | hold_press        |          |                                                                                    |
-| dimmer | 0x00      | None              |          |                                                                                    |
-| dimmer | 0x01      | rotate left       |          |                                                                                    |
-| dimmer | 0x02      | rotate right      |          |                                                                                    |
+| Type   | Object id | Property              | Progress | Notes                                                                              |
+| ------ | --------- | --------------------- | -------- | ---------------------------------------------------------------------------------- |
+| Sensor | 0x51      | acceleration          |          |                                                                                    |
+| Sensor | 0x01      | battery               | Done     |                                                                                    |
+| Sensor | 0x60      | channel               |          |                                                                                    |
+| Sensor | 0x12      | co2                   |          |                                                                                    |
+| Sensor | 0x56      | conductivity          |          |                                                                                    |
+| Sensor | 0x09      | count                 | Done     |                                                                                    |
+| Sensor | 0x3D      | count                 | Done     |                                                                                    |
+| Sensor | 0x3E      | count                 | Done     |                                                                                    |
+| Sensor | 0x59      | count                 | Done     | Not showing in HA                                                                  |
+| Sensor | 0x5A      | count                 | Done     | Not showing in HA                                                                  |
+| Sensor | 0x5B      | count                 | Done     | Not showing in HA                                                                  |
+| Sensor | 0x43      | current               |          |                                                                                    |
+| Sensor | 0x5D      | current               |          |                                                                                    |
+| Sensor | 0x08      | dewpoint              |          |                                                                                    |
+| Sensor | 0x5E      | direction             |          |                                                                                    |
+| Sensor | 0x40      | distance (mm)         | Done     | Showing as metres in HA https://github.com/Bluetooth-Devices/bthome-ble/issues/247 |
+| Sensor | 0x41      | distance (m)          | Done     |                                                                                    |
+| Sensor | 0x42      | duration              |          |                                                                                    |
+| Sensor | 0x4D      | energy                |          |                                                                                    |
+| Sensor | 0x0A      | energy                |          |                                                                                    |
+| Sensor | 0x4B      | gas                   |          |                                                                                    |
+| Sensor | 0x4C      | gas                   |          |                                                                                    |
+| Sensor | 0x52      | gyroscope             |          |                                                                                    |
+| Sensor | 0x03      | humidity              | Done     |                                                                                    |
+| Sensor | 0x2E      | humidity              | Done     |                                                                                    |
+| Sensor | 0x05      | illuminance           |          |                                                                                    |
+| Sensor | 0x06      | mass (kg)             |          |                                                                                    |
+| Sensor | 0x07      | mass (lb)             |          |                                                                                    |
+| Sensor | 0x14      | moisture              |          |                                                                                    |
+| Sensor | 0x2F      | moisture              |          |                                                                                    |
+| Sensor | 0x0D      | pm2.5                 |          |                                                                                    |
+| Sensor | 0x0E      | pm10                  |          |                                                                                    |
+| Sensor | 0x0B      | power                 |          |                                                                                    |
+| Sensor | 0x5C      | power                 |          |                                                                                    |
+| Sensor | 0x5F      | precipitation         |          |                                                                                    |
+| Sensor | 0x04      | pressure              |          |                                                                                    |
+| Sensor | 0x54      | raw                   |          |                                                                                    |
+| Sensor | 0x3F      | rotation              |          |                                                                                    |
+| Sensor | 0x44      | speed                 |          |                                                                                    |
+| Sensor | 0x57      | temperature           | Done     |                                                                                    |
+| Sensor | 0x58      | temperature           | Done     |                                                                                    |
+| Sensor | 0x45      | temperature           | Done     |                                                                                    |
+| Sensor | 0x02      | temperature           | Done     |                                                                                    |
+| Sensor | 0x53      | text                  | Next     |                                                                                    |
+| Sensor | 0x50      | timestamp             | Next     |                                                                                    |
+| Sensor | 0x13      | tvoc                  |          |                                                                                    |
+| Sensor | 0x0C      | voltage               |          |                                                                                    |
+| Sensor | 0x4A      | voltage               |          |                                                                                    |
+| Sensor | 0x4E      | volume                |          |                                                                                    |
+| Sensor | 0x47      | volume                |          |                                                                                    |
+| Sensor | 0x48      | volume                |          |                                                                                    |
+| Sensor | 0x55      | volume storage        |          |                                                                                    |
+| Sensor | 0x49      | volume flow rate      |          |                                                                                    |
+| Sensor | 0x46      | UV index              |          |                                                                                    |
+| Sensor | 0x4F      | water                 |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
+|        | Object id | Property              |          |                                                                                    |
+| Binary | 0x15      | battery  (normal/low) | Done     |                                                                                    |
+| Binary | 0x16      | battery charging      |          |                                                                                    |
+| Binary | 0x17      | carbon monoxide       |          |                                                                                    |
+| Binary | 0x18      | cold                  |          |                                                                                    |
+| Binary | 0x19      | connectivity          |          |                                                                                    |
+| Binary | 0x1A      | door                  |          |                                                                                    |
+| Binary | 0x1B      | garage door           |          |                                                                                    |
+| Binary | 0x1C      | gas                   |          |                                                                                    |
+| Binary | 0x0F      | generic boolean       |          |                                                                                    |
+| Binary | 0x1D      | heat                  |          |                                                                                    |
+| Binary | 0x1E      | light                 |          |                                                                                    |
+| Binary | 0x1F      | lock                  |          |                                                                                    |
+| Binary | 0x20      | moisture              |          |                                                                                    |
+| Binary | 0x21      | motion                |          |                                                                                    |
+| Binary | 0x22      | moving                | Next     |                                                                                    |
+| Binary | 0x23      | occupancy             |          |                                                                                    |
+| Binary | 0x11      | opening               |          |                                                                                    |
+| Binary | 0x24      | plug                  |          |                                                                                    |
+| Binary | 0x10      | power                 |          |                                                                                    |
+| Binary | 0x25      | presence              | Next     |                                                                                    |
+| Binary | 0x26      | problem               |          |                                                                                    |
+| Binary | 0x27      | running               |          |                                                                                    |
+| Binary | 0x28      | safety                |          |                                                                                    |
+| Binary | 0x29      | smoke                 |          |                                                                                    |
+| Binary | 0x2A      | sound                 |          |                                                                                    |
+| Binary | 0x2B      | tamper                |          |                                                                                    |
+| Binary | 0x2C      | vibration             |          |                                                                                    |
+| Binary | 0x2D      | window                |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
+|        |           |                       |          |                                                                                    |
+| button | 0x00      | None                  |          |                                                                                    |
+| button | 0x01      | press                 |          |                                                                                    |
+| button | 0x02      | double_press          |          |                                                                                    |
+| button | 0x03      | triple_press          |          |                                                                                    |
+| button | 0x04      | long_press            |          |                                                                                    |
+| button | 0x05      | long_double_press     |          |                                                                                    |
+| button | 0x06      | long_triple_press     |          |                                                                                    |
+| button | 0x80      | hold_press            |          |                                                                                    |
+| dimmer | 0x00      | None                  |          |                                                                                    |
+| dimmer | 0x01      | rotate left           |          |                                                                                    |
+| dimmer | 0x02      | rotate right          |          |                                                                                    |
 
 

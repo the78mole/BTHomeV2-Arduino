@@ -35,6 +35,13 @@ enum VoltageRangeResolution
     RANGE_65535_RESOLUTION_0_1
 };
 
+/// @brief Battery state options 
+enum BATTERY_STATE
+{
+    BATTERY_STATE_NORMAL = 0,
+    BATTERY_STATE_LOW = 1
+};
+
 class BtHomeV2Device
 {
 public:
@@ -80,6 +87,8 @@ public:
      * @param batteryPercentOrMillivolts Battery level as an unsigned 8-bit value (e.g., percentage or mV depending on implementation).
      */
     bool addBatteryPercentage(uint8_t batteryPercentage);
+
+    bool setBatteryState(BATTERY_STATE batteryState);
 
     /**
      * @brief Set the temperature value in the packet.
