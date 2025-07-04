@@ -116,3 +116,138 @@ bool BtHomeV2Device::setBatteryState(BATTERY_STATE batteryState)
 {
     return _baseDevice.addState(battery_state, batteryState);
 }
+
+bool BtHomeV2Device::setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState)
+{
+    return _baseDevice.addState(battery_charging, batteryChargingState);
+}
+
+bool BtHomeV2Device::setCarbonMonoxideState(Carbon_Monoxide_Sensor_Status carbonMonoxideState)
+{
+    return _baseDevice.addState(carbon_monoxide, carbonMonoxideState);
+}
+
+bool BtHomeV2Device::setColdState(Cold_Sensor_Status coldState)
+{
+    return _baseDevice.addState(cold, coldState);
+}
+
+bool BtHomeV2Device::setConnectivityState(Connectivity_Sensor_Status connectivityState)
+{
+    return _baseDevice.addState(connectivity, connectivityState);
+}
+
+bool BtHomeV2Device::setDoorState(Door_Sensor_Status doorState)
+{
+    return _baseDevice.addState(door, doorState);
+}
+
+bool BtHomeV2Device::setGarageDoorState(Garage_Door_Sensor_Status garageDoorState)
+{
+    return _baseDevice.addState(garage_door, garageDoorState);
+}
+
+bool BtHomeV2Device::setGasState(Gas_Sensor_Status gasState)
+{
+    return _baseDevice.addState(gas, gasState);
+}
+
+bool BtHomeV2Device::setGenericState(Generic_Sensor_Status genericState)
+{
+    return _baseDevice.addState(generic_boolean, genericState);
+}
+
+bool BtHomeV2Device::setHeatState(Heat_Sensor_Status heatState)
+{
+    return _baseDevice.addState(heat, heatState);
+}
+
+bool BtHomeV2Device::setLightState(Light_Sensor_Status lightState)
+{
+    return _baseDevice.addState(light, lightState);
+}
+
+bool BtHomeV2Device::setLockState(Lock_Sensor_Status lockState)
+{
+    return _baseDevice.addState(lock, lockState);
+}
+
+bool BtHomeV2Device::setMoistureState(Moisture_Sensor_Status moistureState)
+{
+    return _baseDevice.addState(moisture, moistureState);
+}
+
+bool BtHomeV2Device::setMotionState(Motion_Sensor_Status motionState)
+{
+    return _baseDevice.addState(motion, motionState);
+}
+
+bool BtHomeV2Device::setMovingState(Moving_Sensor_Status movingState)
+{
+    return _baseDevice.addState(moving, movingState);
+}
+
+bool BtHomeV2Device::setOccupancyState(Occupancy_Sensor_Status occupancyState)
+{
+    return _baseDevice.addState(occupancy, occupancyState);
+}
+
+bool BtHomeV2Device::setOpeningState(Opening_Sensor_Status openingState)
+{
+    return _baseDevice.addState(opening, openingState);
+}
+
+bool BtHomeV2Device::setPlugState(Plug_Sensor_Status plugState)
+{
+    return _baseDevice.addState(plug, plugState);
+}
+
+bool BtHomeV2Device::setPowerState(Power_Sensor_Status powerState)
+{
+    return _baseDevice.addState(power, powerState);
+}
+
+bool BtHomeV2Device::setPresenceState(Presence_Sensor_Status presenceState)
+{
+    return _baseDevice.addState(presence, presenceState);
+}
+
+bool BtHomeV2Device::setProblemState(Problem_Sensor_Status problemState)
+{
+    return _baseDevice.addState(problem, problemState);
+}
+
+bool BtHomeV2Device::setRunningState(Running_Sensor_Status runningState)
+{
+    return _baseDevice.addState(running, runningState);
+}
+
+bool BtHomeV2Device::setSafetyState(Safety_Sensor_Status safetyState)
+{
+    return _baseDevice.addState(safety, safetyState);
+}
+
+bool BtHomeV2Device::setSmokeState(Smoke_Sensor_Status smokeState)
+{
+    return _baseDevice.addState(smoke, smokeState);
+}
+
+bool BtHomeV2Device::setSoundState(Sound_Sensor_Status soundState)
+{
+    return _baseDevice.addState(sound, soundState);
+}
+
+bool BtHomeV2Device::setTamperState(Tamper_Sensor_Status tamperState)
+{
+    return _baseDevice.addState(tamper, tamperState);
+}
+
+bool BtHomeV2Device::setVibrationState(Vibration_Sensor_Status vibrationState)
+{
+    return _baseDevice.addState(vibration, vibrationState);
+}
+
+bool BtHomeV2Device::setWindowState(Window_Sensor_Status windowState)
+{
+    return _baseDevice.addState(window, windowState);
+}

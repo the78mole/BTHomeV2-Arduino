@@ -35,7 +35,7 @@ enum VoltageRangeResolution
     RANGE_65535_RESOLUTION_0_1
 };
 
-/// @brief Battery state options 
+/// @brief Battery state options
 enum BATTERY_STATE
 {
     BATTERY_STATE_NORMAL = 0,
@@ -89,6 +89,33 @@ public:
     bool addBatteryPercentage(uint8_t batteryPercentage);
 
     bool setBatteryState(BATTERY_STATE batteryState);
+    bool setBatteryChargingState(Battery_Charging_Sensor_Status batteryChargingState);
+    bool setCarbonMonoxideState(Carbon_Monoxide_Sensor_Status carbonMonoxideState);
+    bool setColdState(Cold_Sensor_Status coldState);
+    bool setConnectivityState(Connectivity_Sensor_Status connectivityState);
+    bool setDoorState(Door_Sensor_Status doorState);
+    bool setGarageDoorState(Garage_Door_Sensor_Status garageDoorState);
+    bool setGasState(Gas_Sensor_Status gasState);
+    bool setGenericState(Generic_Sensor_Status genericState);
+    bool setHeatState(Heat_Sensor_Status heatState);
+    bool setLightState(Light_Sensor_Status lightState);
+    bool setLockState(Lock_Sensor_Status lockState);
+    bool setMoistureState(Moisture_Sensor_Status moistureState);
+    bool setMotionState(Motion_Sensor_Status motionState);
+    bool setMovingState(Moving_Sensor_Status movingState);
+    bool setOccupancyState(Occupancy_Sensor_Status occupancyState);
+    bool setOpeningState(Opening_Sensor_Status openingState);
+    bool setPlugState(Plug_Sensor_Status plugState);
+    bool setPowerState(Power_Sensor_Status powerState);
+    bool setPresenceState(Presence_Sensor_Status presenceState);
+    bool setProblemState(Problem_Sensor_Status problemState);
+    bool setRunningState(Running_Sensor_Status runningState);
+    bool setSafetyState(Safety_Sensor_Status safetyState);
+    bool setSmokeState(Smoke_Sensor_Status smokeState);
+    bool setSoundState(Sound_Sensor_Status soundState);
+    bool setTamperState(Tamper_Sensor_Status tamperState);
+    bool setVibrationState(Vibration_Sensor_Status vibrationState);
+    bool setWindowState(Window_Sensor_Status windowState);
 
     /**
      * @brief Set the temperature value in the packet.
@@ -102,7 +129,7 @@ public:
      * @param humidityPercent Relative humidity in percent.
      */
     bool addHumidity_0_01(float humidityPercent);
-    
+
     /**
      * @brief Set the humidity value with a resolution of 0.1% in the packet. 1 byte.
      * @param humidityPercent Relative humidity in percent.

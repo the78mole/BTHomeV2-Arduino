@@ -97,5 +97,202 @@ const BtHomeType water_litre = {0x4F, 0.001f, 4, true};
 
 
 const BtHomeState battery_state = {0x15,1}; // Battery state, 1 byte, 0 = normal, 1 = low
+const BtHomeState battery_charging = {0x16, 1};
+const BtHomeState carbon_monoxide = {0x17, 1};
+const BtHomeState cold = {0x18, 1};
+const BtHomeState connectivity = {0x19, 1};
+const BtHomeState door = {0x1A, 1};
+const BtHomeState garage_door = {0x1B, 1};
+const BtHomeState gas = {0x1C, 1};
+const BtHomeState generic_boolean = {0x0F, 1};
+const BtHomeState heat = {0x1D, 1};
+const BtHomeState light = {0x1E, 1};
+const BtHomeState lock = {0x1F, 1};
+const BtHomeState moisture = {0x20, 1};
+const BtHomeState motion = {0x21, 1};
+const BtHomeState moving = {0x22, 1};
+const BtHomeState occupancy = {0x23, 1};
+const BtHomeState opening = {0x11, 1};
+const BtHomeState plug = {0x24, 1};
+const BtHomeState power = {0x10, 1};
+const BtHomeState presence = {0x25, 1};
+const BtHomeState problem = {0x26, 1};
+const BtHomeState running = {0x27, 1};
+const BtHomeState safety = {0x28, 1};
+const BtHomeState smoke = {0x29, 1};
+const BtHomeState sound = {0x2A, 1};
+const BtHomeState tamper = {0x2B, 1};
+const BtHomeState vibration = {0x2C, 1};
+const BtHomeState window = {0x2D, 1};
+
+enum Battery_Sensor_Status 
+{
+    Battery_Normal = 0,    // False = Normal
+    Battery_Low    = 1     // True  = Low
+};
+
+enum Battery_Charging_Sensor_Status 
+{
+    Battery_Not_Charging = 0,  // False = Not Charging
+    Battery_Charging     = 1   // True  = Charging
+};
+
+enum Carbon_Monoxide_Sensor_Status 
+{
+    Carbon_Monoxide_Not_Detected = 0,  // False = Not detected
+    Carbon_Monoxide_Detected     = 1   // True  = Detected
+};
+
+enum Cold_Sensor_Status 
+{
+    Cold_Normal = 0,  // False = Normal
+    Cold_Cold   = 1   // True  = Cold
+};
+
+enum Connectivity_Sensor_Status 
+{
+    Connectivity_Disconnected = 0,  // False = Disconnected
+    Connectivity_Connected    = 1   // True  = Connected
+};
+
+enum Door_Sensor_Status 
+{
+    Door_Closed = 0,  // False = Closed
+    Door_Open   = 1   // True  = Open
+};
+
+enum Garage_Door_Sensor_Status 
+{
+    Garage_Door_Closed = 0,  // False = Closed
+    Garage_Door_Open   = 1   // True  = Open
+};
+
+enum Gas_Sensor_Status 
+{
+    Gas_Clear    = 0,  // False = Clear
+    Gas_Detected = 1   // True  = Detected
+};
+
+enum Generic_Sensor_Status 
+{
+    Generic_Off = 0,   // False = Off
+    Generic_On  = 1    // True  = On
+};
+
+enum Heat_Sensor_Status 
+{
+    Heat_Normal = 0,  // False = Normal
+    Heat_Hot    = 1   // True  = Hot
+};
+
+enum Light_Sensor_Status 
+{
+    Light_No_Light  = 0,  // False = No light
+    Light_Detected  = 1   // True  = Light detected
+};
+
+enum Lock_Sensor_Status 
+{
+    Lock_Locked   = 0,  // False = Locked
+    Lock_Unlocked = 1   // True  = Unlocked
+};
+
+enum Moisture_Sensor_Status 
+{
+    Moisture_Dry = 0,   // False = Dry
+    Moisture_Wet = 1    // True  = Wet
+};
+
+enum Motion_Sensor_Status 
+{
+    Motion_Clear    = 0,  // False = Clear
+    Motion_Detected = 1   // True  = Detected
+};
+
+enum Moving_Sensor_Status 
+{
+    Moving_Not_Moving = 0,  // False = Not moving
+    Moving_Moving     = 1   // True  = Moving
+};
+
+enum Occupancy_Sensor_Status 
+{
+    Occupancy_Clear    = 0,  // False = Clear
+    Occupancy_Detected = 1   // True  = Detected
+};
+
+enum Opening_Sensor_Status 
+{
+    Opening_Closed = 0,  // False = Closed
+    Opening_Open   = 1   // True  = Open
+};
+
+enum Plug_Sensor_Status 
+{
+    Plug_Unplugged = 0,  // False = Unplugged
+    Plug_Plugged_In = 1  // True  = Plugged in
+};
+
+enum Power_Sensor_Status 
+{
+    Power_Off = 0,  // False = Off
+    Power_On  = 1   // True  = On
+};
+
+enum Presence_Sensor_Status 
+{
+    Presence_Away = 0,  // False = Away
+    Presence_Home = 1   // True  = Home
+};
+
+enum Problem_Sensor_Status 
+{
+    Problem_OK      = 0,  // False = OK
+    Problem_Problem = 1   // True  = Problem
+};
+
+enum Running_Sensor_Status 
+{
+    Running_Not_Running = 0,  // False = Not Running
+    Running_Running     = 1   // True  = Running
+};
+
+enum Safety_Sensor_Status 
+{
+    Safety_Unsafe = 0,  // False = Unsafe
+    Safety_Safe   = 1   // True  = Safe
+};
+
+enum Smoke_Sensor_Status 
+{
+    Smoke_Clear    = 0,  // False = Clear
+    Smoke_Detected = 1   // True  = Detected
+};
+
+enum Sound_Sensor_Status 
+{
+    Sound_Clear    = 0,  // False = Clear
+    Sound_Detected = 1   // True  = Detected
+};
+
+enum Tamper_Sensor_Status 
+{
+    Tamper_Off = 0,  // False = Off
+    Tamper_On  = 1   // True  = On
+};
+
+enum Vibration_Sensor_Status 
+{
+    Vibration_Clear    = 0,  // False = Clear
+    Vibration_Detected = 1   // True  = Detected
+};
+
+enum Window_Sensor_Status 
+{
+    Window_Closed = 0,  // False = Closed
+    Window_Open   = 1   // True  = Open
+};
+
 
 #endif // BT_HOME_DATA_TYPES_H
+
