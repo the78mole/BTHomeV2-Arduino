@@ -121,61 +121,61 @@ Quite a few things to implement, but hopefully will get through them all.
 
 | Type   | Object id | Property              | Progress | Notes                                                                              |
 | ------ | --------- | --------------------- | -------- | ---------------------------------------------------------------------------------- |
-| Sensor | 0x51      | acceleration          |          |                                                                                    |
+| Sensor | 0x51      | acceleration          | Done     |                                                                                    |
 | Sensor | 0x01      | battery               | Done     |                                                                                    |
-| Sensor | 0x60      | channel               |          |                                                                                    |
-| Sensor | 0x12      | co2                   |          |                                                                                    |
-| Sensor | 0x56      | conductivity          |          |                                                                                    |
+| Sensor | 0x60      | channel               | Done     |                                                                                    |
+| Sensor | 0x12      | co2                   | Done     |                                                                                    |
+| Sensor | 0x56      | conductivity          | Done     |                                                                                    |
 | Sensor | 0x09      | count                 | Done     |                                                                                    |
 | Sensor | 0x3D      | count                 | Done     |                                                                                    |
 | Sensor | 0x3E      | count                 | Done     |                                                                                    |
 | Sensor | 0x59      | count                 | Done     | Not showing in HA                                                                  |
 | Sensor | 0x5A      | count                 | Done     | Not showing in HA                                                                  |
 | Sensor | 0x5B      | count                 | Done     | Not showing in HA                                                                  |
-| Sensor | 0x43      | current               |          |                                                                                    |
-| Sensor | 0x5D      | current               |          |                                                                                    |
-| Sensor | 0x08      | dewpoint              |          |                                                                                    |
-| Sensor | 0x5E      | direction             |          |                                                                                    |
+| Sensor | 0x43      | current               | Done     |                                                                                    |
+| Sensor | 0x5D      | current               | Done     |                                                                                    |
+| Sensor | 0x08      | dewpoint              | Done     |                                                                                    |
+| Sensor | 0x5E      | direction             | Done     |                                                                                    |
 | Sensor | 0x40      | distance (mm)         | Done     | Showing as metres in HA https://github.com/Bluetooth-Devices/bthome-ble/issues/247 |
 | Sensor | 0x41      | distance (m)          | Done     |                                                                                    |
-| Sensor | 0x42      | duration              |          |                                                                                    |
-| Sensor | 0x4D      | energy                |          |                                                                                    |
-| Sensor | 0x0A      | energy                |          |                                                                                    |
-| Sensor | 0x4B      | gas                   |          |                                                                                    |
-| Sensor | 0x4C      | gas                   |          |                                                                                    |
-| Sensor | 0x52      | gyroscope             |          |                                                                                    |
+| Sensor | 0x42      | duration              | Done     |                                                                                    |
+| Sensor | 0x4D      | energy                | Done     |                                                                                    |
+| Sensor | 0x0A      | energy                | Done     |                                                                                    |
+| Sensor | 0x4B      | gas                   | Done     |                                                                                    |
+| Sensor | 0x4C      | gas                   | Done     |                                                                                    |
+| Sensor | 0x52      | gyroscope             | Done     |                                                                                    |
 | Sensor | 0x03      | humidity              | Done     |                                                                                    |
 | Sensor | 0x2E      | humidity              | Done     |                                                                                    |
-| Sensor | 0x05      | illuminance           |          |                                                                                    |
-| Sensor | 0x06      | mass (kg)             |          |                                                                                    |
-| Sensor | 0x07      | mass (lb)             |          |                                                                                    |
-| Sensor | 0x14      | moisture              |          |                                                                                    |
-| Sensor | 0x2F      | moisture              |          |                                                                                    |
-| Sensor | 0x0D      | pm2.5                 |          |                                                                                    |
-| Sensor | 0x0E      | pm10                  |          |                                                                                    |
-| Sensor | 0x0B      | power                 |          |                                                                                    |
-| Sensor | 0x5C      | power                 |          |                                                                                    |
-| Sensor | 0x5F      | precipitation         |          |                                                                                    |
-| Sensor | 0x04      | pressure              |          |                                                                                    |
+| Sensor | 0x05      | illuminance           | Done     |                                                                                    |
+| Sensor | 0x06      | mass (kg)             | Done     |                                                                                    |
+| Sensor | 0x07      | mass (lb)             | Done     |                                                                                    |
+| Sensor | 0x14      | moisture              | Done     |                                                                                    |
+| Sensor | 0x2F      | moisture              | Done     |                                                                                    |
+| Sensor | 0x0D      | pm2.5                 | Done     |                                                                                    |
+| Sensor | 0x0E      | pm10                  | Done     |                                                                                    |
+| Sensor | 0x0B      | power                 | Done     |                                                                                    |
+| Sensor | 0x5C      | power                 | Done     |                                                                                    |
+| Sensor | 0x5F      | precipitation         | Done     |                                                                                    |
+| Sensor | 0x04      | pressure              | Done     |                                                                                    |
 | Sensor | 0x54      | raw                   | Done     |                                                                                    |
-| Sensor | 0x3F      | rotation              |          |                                                                                    |
-| Sensor | 0x44      | speed                 |          |                                                                                    |
+| Sensor | 0x3F      | rotation              | Done     |                                                                                    |
+| Sensor | 0x44      | speed                 | Done     |                                                                                    |
 | Sensor | 0x57      | temperature           | Done     |                                                                                    |
 | Sensor | 0x58      | temperature           | Done     |                                                                                    |
 | Sensor | 0x45      | temperature           | Done     |                                                                                    |
 | Sensor | 0x02      | temperature           | Done     |                                                                                    |
 | Sensor | 0x53      | text                  | Done     |                                                                                    |
 | Sensor | 0x50      | timestamp             | Done     | Uses the epoch seconds. Use your own library for time management.                  |
-| Sensor | 0x13      | tvoc                  |          |                                                                                    |
-| Sensor | 0x0C      | voltage               |          |                                                                                    |
-| Sensor | 0x4A      | voltage               |          |                                                                                    |
-| Sensor | 0x4E      | volume                |          |                                                                                    |
-| Sensor | 0x47      | volume                |          |                                                                                    |
-| Sensor | 0x48      | volume                |          |                                                                                    |
-| Sensor | 0x55      | volume storage        |          |                                                                                    |
-| Sensor | 0x49      | volume flow rate      |          |                                                                                    |
-| Sensor | 0x46      | UV index              |          |                                                                                    |
-| Sensor | 0x4F      | water                 |          |                                                                                    |
+| Sensor | 0x13      | tvoc                  | Done     |                                                                                    |
+| Sensor | 0x0C      | voltage               | Done     |                                                                                    |
+| Sensor | 0x4A      | voltage               | Done     |                                                                                    |
+| Sensor | 0x4E      | volume                | Done     |                                                                                    |
+| Sensor | 0x47      | volume                | Done     |                                                                                    |
+| Sensor | 0x48      | volume                | Done     |                                                                                    |
+| Sensor | 0x55      | volume storage        | Done     |                                                                                    |
+| Sensor | 0x49      | volume flow rate      | Done     |                                                                                    |
+| Sensor | 0x46      | UV index              | Done     |                                                                                    |
+| Sensor | 0x4F      | water                 | Done     |                                                                                    |
 |        |           |                       |          |                                                                                    |
 | binary | 0x15      | battery  (normal/low) | Done     |                                                                                    |
 | binary | 0x16      | battery charging      | Done     |                                                                                    |
