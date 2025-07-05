@@ -44,7 +44,7 @@ void loop()
   // Set battery percentage
   btHome.addBatteryPercentage(22);
 
-  uint8_t advertisementData[MAX_PAYLOAD_SIZE];
+  uint8_t advertisementData[MAX_ADVERTISEMENT_SIZE];
   size_t size = btHome.getAdvertisementData(advertisementData);
 
   // Set the advertisement data on BLE

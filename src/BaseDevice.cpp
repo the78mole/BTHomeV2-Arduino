@@ -10,15 +10,10 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 {
 
   strncpy(_shortName, shortName, MAX_LENGTH_SHORT_NAME);
-  _shortName[MAX_LENGTH_SHORT_NAME - 1] = '\0';
+  _shortName[MAX_LENGTH_SHORT_NAME] = '\0';
 
   strncpy(_completeName, completeName, MAX_LENGTH_COMPLETE_NAME);
-  _completeName[MAX_LENGTH_COMPLETE_NAME - 1] = '\0';
-
-  // 09XXXXX 1 + short name length
-  // 020106050816D2FC40 = 9 for flags
-  uint8_t bytesTaken = (_shortName, MAX_LENGTH_SHORT_NAME) + 1 + 9;
-  _maximumMeasurementBytes = MAX_PAYLOAD_SIZE - bytesTaken; // 2 bytes for the name id and size byte
+  _completeName[MAX_LENGTH_COMPLETE_NAME] = '\0';
 }
 
 /// @brief Clear the measurement data.
@@ -34,7 +29,7 @@ void BaseDevice::resetMeasurement()
 bool BaseDevice::hasEnoughSpace(BtHomeState sensor)
 {
   // minimum space is needed for the short name, but if there is spare room then we can use the full name
-  int remainingBytes = _maximumMeasurementBytes - _sensorDataIdx;
+  int remainingBytes = MAX_MEASUREMENT_SIZE - _sensorDataIdx;
   bool result = (remainingBytes >= sensor.byteCount + 1); // include sensor indicator byte
   return result;
 }
@@ -126,20 +121,16 @@ bool BaseDevice::pushBytes(uint64_t value2, BtHomeType sensor)
 /// @return
 bool BaseDevice::addRaw(uint8_t sensorId, uint8_t *value, uint8_t size)
 {
-  if ((_sensorDataIdx + size + 1) > _maximumMeasurementBytes)
-  // TODO: see if this can be moved to the hasEnoughSpace function
+  if ((_sensorDataIdx + size + 1) > MAX_MEASUREMENT_SIZE)
   {
     return false;
   }
 
-  _sensorData[_sensorDataIdx] = sensorId;
-  _sensorDataIdx++;
-  _sensorData[_sensorDataIdx] = static_cast<byte>(size & 0xff);
-  _sensorDataIdx++;
+  _sensorData[_sensorDataIdx++] = sensorId;
+  _sensorData[_sensorDataIdx++] = static_cast<byte>(size & 0xff);
   for (uint8_t i = 0; i < size; i++)
   {
-    _sensorData[_sensorDataIdx] = static_cast<byte>(value[i] & 0xff);
-    _sensorDataIdx++;
+    _sensorData[_sensorDataIdx++] = static_cast<byte>(value[i] & 0xff);
   }
   return true;
 }
@@ -153,22 +144,23 @@ size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
   buffer[idx++] = FLAG2;
   buffer[idx++] = FLAG3;
 
-  // 2. Name (Complete or Short)
-  uint8_t completeNameLength = strlen(_completeName);
-  uint8_t shortNameLength = strlen(_shortName);
 
-  bool canFitLongName = (completeNameLength - shortNameLength) + _sensorDataIdx <= _maximumMeasurementBytes;
-
+  // prefer long name
+  uint8_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
+  bool canFitLongName = idx + completeNameLength + TYPE_INDICATOR_SIZE <= MAX_ADVERTISEMENT_SIZE;
   if (canFitLongName)
   {
-    buffer[idx++] = completeNameLength + 1; // Length of this AD field
+    buffer[idx++] = completeNameLength + TYPE_INDICATOR_SIZE; // Length of this AD field
     buffer[idx++] = COMPLETE_NAME;          // 0x09 for complete name
     memcpy(&buffer[idx], _completeName, completeNameLength);
     idx += completeNameLength;
   }
-  else
+
+  uint8_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
+  bool canFitShortName =  idx + shortNameLength + TYPE_INDICATOR_SIZE <= MAX_ADVERTISEMENT_SIZE;
+  if (canFitShortName)
   {
-    buffer[idx++] = shortNameLength + 1;
+    buffer[idx++] = shortNameLength + TYPE_INDICATOR_SIZE;
     buffer[idx++] = SHORT_NAME; // 0x08 for short name
     memcpy(&buffer[idx], _shortName, shortNameLength);
     idx += shortNameLength;
@@ -176,7 +168,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t *buffer)
 
   // 3. Service Data
   size_t serviceDataStart = idx;          // Remember where service data starts
-  buffer[idx++] = 3 + 1 + _sensorDataIdx; // Service Data length (UUID(2) + header(1) + sensorData)
+  buffer[idx++] = 3 + TYPE_INDICATOR_SIZE + _sensorDataIdx; // Packet length =  Service Data length (UUID(2) + header(1) + sensorData)
   buffer[idx++] = SERVICE_DATA;           // 0x16
   buffer[idx++] = UUID1;                  // 0xD2
   buffer[idx++] = UUID2;                  // 0xFC

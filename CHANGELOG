@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BTHome image assets 
 
 ### Changed
+- Short and Complete name only added when there is space. May require a blank advertisement to send names
 - Not using enum style methods for value sensors. Will continue to use them for the states.
 - Fixed: short and long name termination issue
 - Fixed: max packet size check
