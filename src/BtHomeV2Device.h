@@ -27,7 +27,7 @@ public:
     /// @param completeName  Full name of the device - sent when space is available. Max 20 characters
     /// @param isTriggerDevice - If the device sends data when triggered
     BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerDevice);
-    size_t getAdvertisementData(uint8_t *buffer);
+    size_t getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE]);
 
     void clearMeasurementData();
 
@@ -126,9 +126,9 @@ public:
 
     bool addConductivityMicrosecondsPerCm(float value);
 
-    bool addCurrentAmps_0_65(float value);
+    bool addCurrentAmps_0_65_Resolution_0_001(float value);
 
-    bool addCurrentAmps_neg32_to_32(float value);
+    bool addCurrentAmps_neg32_to_32_Resolution_0_001(float value);
 
     bool addDewPointDegreesCelsius(float value);
 

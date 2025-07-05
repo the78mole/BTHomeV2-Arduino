@@ -8,7 +8,7 @@ void BtHomeV2Device::clearMeasurementData()
 /// @brief Builds an outgoing wrapper for the current measurement data.
 /// @param payload
 /// @return
-size_t BtHomeV2Device::getAdvertisementData(uint8_t *buffer)
+size_t BtHomeV2Device::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 {
     return _baseDevice.getAdvertisementData(buffer);
 }
@@ -272,12 +272,12 @@ bool BtHomeV2Device::addConductivityMicrosecondsPerCm(float value)
     return _baseDevice.addFloat(conductivity, value);
 }
 
-bool BtHomeV2Device::addCurrentAmps_neg32_to_32(float value)
+bool BtHomeV2Device::addCurrentAmps_neg32_to_32_Resolution_0_001(float value)
 {
     return _baseDevice.addFloat(current_int16, value);
 }
 
-bool BtHomeV2Device::addCurrentAmps_0_65(float value)
+bool BtHomeV2Device::addCurrentAmps_0_65_Resolution_0_001(float value)
 {
     return _baseDevice.addFloat(current_uint16, value);
 }
