@@ -162,11 +162,14 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   buffer[idx++] = UUID1;                                                         // 0xD2
   buffer[idx++] = UUID2;                                                         // 0xFC
 
-  // Header (no encryption vs trigger based)
+  uint8_t indicatorByte = FLAG_VERSION;
+
   if (_triggerDevice)
-    buffer[idx++] = NO_ENCRYPT_TRIGGER_BASE;
-  else
-    buffer[idx++] = NO_ENCRYPT;
+  {
+    indicatorByte |= FLAG_TRIGGER;
+  }
+
+  buffer[idx++] = indicatorByte;
 
   // Sensor Data
   for (size_t i = 0; i < _sensorDataIdx; i++)
@@ -193,6 +196,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
     idx += shortNameLength;
   }
 
+#ifdef BTHOME_DEBUG
   Serial.print("Advertisement: ");
   for (size_t i = 0; i < idx; i++)
   {
@@ -205,6 +209,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   Serial.print(" (size: ");
   Serial.print(idx);
   Serial.println(" bytes)");
+#endif
 
   return idx; // Number of bytes written to buffer
 }
