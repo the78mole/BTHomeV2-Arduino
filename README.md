@@ -18,6 +18,8 @@ Create an issue if you want to see something added.
 
 BTHome makes it easier to add very low power sensing devices to your Home Network using standard Arduino devices such as any ESP32, or more specifically the ultra low power,  battery driven devices such as the FireBeetle 2 ESP32-C6.
 
+![Home Assistant Display](./assets/bthomeha-display.png)
+
 ## Why use BTHome? 
 
 Power usage is the main consideration.
@@ -62,7 +64,8 @@ The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not
 
 Refer to the directory `./examples`  for specific library implementations.
 
-- esphome proxy configuration
+- ESPHome BLE proxy configuration [.\examples\esphome\ble-proxy.yaml](.\examples\esphome\ble-proxy.yaml)
+- DFRobot ESP32 Firebeetle 2 C6 using ArduinoBLE  [./examples/FireBeetle2C6/FireBeetle2C6.ino](./examples/FireBeetle2C6/FireBeetle2C6.ino)
 - NimBLE BLE Library  [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
 
 ## Usage
@@ -83,7 +86,7 @@ Refer to the directory `./examples`  for specific library implementations.
   // Set battery percentage 
   btHome.addBatteryPercentage(22);
 
-  uint8_t advertisementData[MAX_PAYLOAD_SIZE];
+  uint8_t advertisementData[MAX_ADVERTISEMENT_SIZE];
   size_t size = btHome.getAdvertisementData(advertisementData);
 
 

@@ -1,0 +1,275 @@
+BtHomeV2Device KEYWORD1
+MAX_ADVERTISEMENT_SIZE  Literal1
+getAdvertisementDataKEYWORD2
+clearMeasurementDataKEYWORD2
+addCount_0_4294967295   KEYWORD2
+addCount_0_255  KEYWORD2
+addCount_0_65535KEYWORD2
+addCount_neg128_127 KEYWORD2
+addCount_neg32768_32767 KEYWORD2
+addCount_neg2147483648_2147483647   KEYWORD2
+addDistanceMetres   KEYWORD2
+addTemperature_neg44_to_44_Resolution_0_35  KEYWORD2
+addTemperature_neg127_to_127_Resolution_1   KEYWORD2
+addTemperature_neg3276_to_3276_Resolution_0_1   KEYWORD2
+addTemperature_neg327_to_327_Resolution_0_01KEYWORD2
+addDistanceMillimetres  KEYWORD2
+addBatteryPercentageKEYWORD2
+addText KEYWORD2
+addTime KEYWORD2
+addRaw  KEYWORD2
+setBatteryState KEYWORD2
+setBatteryChargingState KEYWORD2
+setCarbonMonoxideState  KEYWORD2
+setColdStateKEYWORD2
+setConnectivityStateKEYWORD2
+setDoorStateKEYWORD2
+setGarageDoorState  KEYWORD2
+setGasState KEYWORD2
+setGenericState KEYWORD2
+setHeatStateKEYWORD2
+setLightState   KEYWORD2
+setLockStateKEYWORD2
+setMoistureStateKEYWORD2
+setMotionState  KEYWORD2
+setMovingState  KEYWORD2
+setOccupancyState   KEYWORD2
+setOpeningState KEYWORD2
+setPlugStateKEYWORD2
+setPowerState   KEYWORD2
+setPresenceStateKEYWORD2
+setProblemState KEYWORD2
+setRunningState KEYWORD2
+setSafetyState  KEYWORD2
+setSmokeState   KEYWORD2
+setSoundState   KEYWORD2
+setTamperState  KEYWORD2
+setVibrationState   KEYWORD2
+setWindowState  KEYWORD2
+setButtonEvent  KEYWORD2
+setDimmerEvent  KEYWORD2
+addHumidityPercent_Resolution_0_01  KEYWORD2
+addHumidityPercent_Resolution_1 KEYWORD2
+addAccelerationMs2  KEYWORD2
+addChannel  KEYWORD2
+addCo2Ppm   KEYWORD2
+addConductivityMicrosecondsPerCmKEYWORD2
+addCurrentAmps_0_65_Resolution_0_001KEYWORD2
+addCurrentAmps_neg32_to_32_Resolution_0_001 KEYWORD2
+addDewPointDegreesCelsius   KEYWORD2
+addDirectionDegrees KEYWORD2
+addDurationSeconds  KEYWORD2
+addEnergyKwh_0_to_16777 KEYWORD2
+addEnergyKwh_0_to_4294967   KEYWORD2
+addGasM3_0_to_16777 KEYWORD2
+addGasM3_0_to_4294967   KEYWORD2
+addGyroscopeDegreeSeconds   KEYWORD2
+addIlluminanceLux   KEYWORD2
+addMassKg   KEYWORD2
+addMassLb   KEYWORD2
+addMoisturePercent_Resolution_1 KEYWORD2
+addMoisturePercent_Resolution_0_01  KEYWORD2
+addPm2_5UgM3KEYWORD2
+addPm10UgM3 KEYWORD2
+addPower_neg21474836_to_21474836_resolution_0_01KEYWORD2
+addPower_0_to_167772_resolution_0_01KEYWORD2
+addPrecipitationMm  KEYWORD2
+addPressureHpa  KEYWORD2
+addRotationDegrees  KEYWORD2
+addSpeedMs  KEYWORD2
+addTvocUgm3 KEYWORD2
+addVoltage_0_to_6550_resolution_0_1 KEYWORD2
+addVoltage_0_to_65_resolution_0_001 KEYWORD2
+addVolumeLitres_0_to_6555_resolution_0_1KEYWORD2
+addVolumeLitres_0_to_65550_resolution_1 KEYWORD2
+addVolumeLitres_0_to_4294967_resolution_0_001   KEYWORD2
+addVolumeStorageLitres  KEYWORD2
+addVolumeFlowRateM3hr   KEYWORD2
+addUvIndex  KEYWORD2
+addWaterLitres  KEYWORD2
+
+Button_Event_Status KEYWORD1
+
+Button_Event_Status_None    KEYWORD2
+Button_Event_Status_Press   KEYWORD2
+Button_Event_Status_Double_Press    KEYWORD2
+Button_Event_Status_Triple_Press    KEYWORD2
+Button_Event_Status_Long_Press  KEYWORD2
+Button_Event_Status_Long_Double_Press   KEYWORD2
+Button_Event_Status_Long_Triple_Press   KEYWORD2
+Button_Event_Status_Hold_Press  KEYWORD2
+
+
+Dimmer_Event_Status KEYWORD1
+
+Dimmer_Event_Status_None    KEYWORD2
+Dimmer_Event_Status_RotateLeft  KEYWORD2
+Dimmer_Event_Status_RotateRight KEYWORD2
+
+
+Battery_Sensor_Status KEYWORD1
+
+Battery_Sensor_Status_Normal    KEYWORD2
+Battery_Sensor_Status_Low   KEYWORD2
+
+
+Battery_Charging_Sensor_Status KEYWORD1
+
+Battery_Charging_Sensor_Status_Not_Charging KEYWORD2
+Battery_Charging_Sensor_Status_Charging KEYWORD2
+
+
+Carbon_Monoxide_Sensor_Status KEYWORD1
+
+Carbon_Monoxide_Sensor_Status_Not_Detected  KEYWORD2
+Carbon_Monoxide_Sensor_Status_Detected  KEYWORD2
+
+
+Cold_Sensor_Status KEYWORD1
+
+Cold_Sensor_Status_Normal   KEYWORD2
+Cold_Sensor_Status_Cold KEYWORD2
+
+
+Connectivity_Sensor_Status KEYWORD1
+
+Connectivity_Sensor_Status_Disconnected KEYWORD2
+Connectivity_Sensor_Status_Connected    KEYWORD2
+
+
+Door_Sensor_Status KEYWORD1
+
+Door_Sensor_Status_Closed   KEYWORD2
+Door_Sensor_Status_Open KEYWORD2
+
+
+Garage_Door_Sensor_Status KEYWORD1
+
+Garage_Door_Sensor_Status_Closed    KEYWORD2
+Garage_Door_Sensor_Status_Open  KEYWORD2
+
+
+Gas_Sensor_Status KEYWORD1
+
+Gas_Sensor_Status_Clear KEYWORD2
+Gas_Sensor_Status_Detected  KEYWORD2
+
+
+Generic_Sensor_Status KEYWORD1
+
+Generic_Sensor_Status_Off   KEYWORD2
+Generic_Sensor_Status_On    KEYWORD2
+
+
+Heat_Sensor_Status KEYWORD1
+
+Heat_Sensor_Status_Normal   KEYWORD2
+Heat_Sensor_Status_Hot  KEYWORD2
+
+
+Light_Sensor_Status KEYWORD1
+
+Light_Sensor_Status_No_Light    KEYWORD2
+Light_Sensor_Status_Detected    KEYWORD2
+
+
+Lock_Sensor_Status KEYWORD1
+
+Lock_Sensor_Status_Locked   KEYWORD2
+Lock_Sensor_Status_Unlocked KEYWORD2
+
+
+Moisture_Sensor_Status KEYWORD1
+
+Moisture_Sensor_Status_Dry  KEYWORD2
+Moisture_Sensor_Status_Wet  KEYWORD2
+
+
+Motion_Sensor_Status KEYWORD1
+
+Motion_Sensor_Status_Clear  KEYWORD2
+Motion_Sensor_Status_Detected   KEYWORD2
+
+
+Moving_Sensor_Status KEYWORD1
+
+Moving_Sensor_Status_Not_Moving KEYWORD2
+Moving_Sensor_Status_Moving KEYWORD2
+
+
+Occupancy_Sensor_Status KEYWORD1
+
+Occupancy_Sensor_Status_Clear   KEYWORD2
+Occupancy_Sensor_Status_Detected    KEYWORD2
+
+
+Opening_Sensor_Status KEYWORD1
+
+Opening_Sensor_Status_Closed    KEYWORD2
+Opening_Sensor_Status_Open  KEYWORD2
+
+
+Plug_Sensor_Status KEYWORD1
+
+Plug_Sensor_Status_Unplugged    KEYWORD2
+Plug_Sensor_Status_Plugged_In   KEYWORD2
+
+
+Power_Sensor_Status KEYWORD1
+
+Power_Sensor_Status_Off KEYWORD2
+Power_Sensor_Status_On  KEYWORD2
+
+
+Presence_Sensor_Status KEYWORD1
+
+Presence_Sensor_Status_Away KEYWORD2
+Presence_Sensor_Status_Home KEYWORD2
+
+
+Problem_Sensor_Status KEYWORD1
+
+Problem_Sensor_Status_OK    KEYWORD2
+Problem_Sensor_Status_Problem   KEYWORD2
+
+
+Running_Sensor_Status KEYWORD1
+
+Running_Sensor_Status_Not_Running   KEYWORD2
+Running_Sensor_Status_Running   KEYWORD2
+
+
+Safety_Sensor_Status KEYWORD1
+
+Safety_Sensor_Status_Unsafe KEYWORD2
+Safety_Sensor_Status_Safe   KEYWORD2
+
+
+Smoke_Sensor_Status KEYWORD1
+
+Smoke_Sensor_Status_Clear   KEYWORD2
+Smoke_Sensor_Status_Detected    KEYWORD2
+
+
+Sound_Sensor_Status KEYWORD1
+
+Sound_Sensor_Status_Clear   KEYWORD2
+Sound_Sensor_Status_Detected    KEYWORD2
+
+
+Tamper_Sensor_Status KEYWORD1
+
+Tamper_Sensor_Status_Off    KEYWORD2
+Tamper_Sensor_Status_On KEYWORD2
+
+
+Vibration_Sensor_Status KEYWORD1
+
+Vibration_Sensor_Status_Clear   KEYWORD2
+Vibration_Sensor_Status_Detected    KEYWORD2
+
+
+Window_Sensor_Status KEYWORD1
+
+Window_Sensor_Status_Closed KEYWORD2
+Window_Sensor_Status_Open   KEYWORD2
