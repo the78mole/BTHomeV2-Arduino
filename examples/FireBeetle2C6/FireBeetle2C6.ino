@@ -3,8 +3,8 @@
 #define SLEEP_DURATION_SECONDS 10
 #define BATTERY_MEASUREMENT_PIN 0
 
-const float V_CUTOFF = 3000; // 0% SoC
-const float V_FULL = 4200;   // 100% SoC
+const float V_CUTOFF = 3000;  // 0% SoC
+const float V_FULL = 4200;    // 100% SoC
 
 /**  This code should work with most devices.
 FireBeetle 2 Notes
@@ -15,8 +15,7 @@ FireBeetle 2 Notes
  */
 RTC_DATA_ATTR uint64_t counter = 0;
 
-void setup()
-{
+void setup() {
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
 
@@ -43,16 +42,12 @@ void setup()
   Serial.println("mV");
   Serial.println("--------------");
 
-  float soc = (analogMillivolts - V_CUTOFF) / (V_FULL - V_CUTOFF) * 100.0;
+  float soc = float(analogMillivolts - V_CUTOFF)
+              / float(V_FULL - V_CUTOFF)
+              * 100.0;
+  soc = constrain(soc, 0.0, 100.0);
 
-  // Clamp between 0 and 100
-  if (soc < 0.0)
-    soc = 0.0;
-  if (soc > 100.0)
-    soc = 100.0;
-
-  if (!BLE.begin())
-  {
+  if (!BLE.begin()) {
     // If BLE doesn't start, then just go to sleep
     Serial.println("Failed to initialize BLE!");
     esp_sleep_enable_timer_wakeup(SLEEP_DURATION_SECONDS * 1000000);
@@ -65,11 +60,12 @@ void setup()
   // first advertisement with battery percentage
   BtHomeV2Device device("BEETLE", "My Firebeetle V2", false);
   device.addBatteryPercentage(soc);
+  device.addWaterLitres(analogValue);
   size = device.getAdvertisementData(advertisementData);
   sendAdvertisement(advertisementData, size);
 
   // second advertisement with the voltage
-  float volts = analogMillivolts / 1000;
+  float volts = analogMillivolts / 1000.0f;
   device.addVoltage_0_to_65_resolution_0_001(volts);
   device.addVoltage_0_to_6550_resolution_0_1(volts);
   device.addCount_0_4294967295(counter++);
@@ -87,8 +83,7 @@ void setup()
   esp_deep_sleep_start();
 }
 
-void sendAdvertisement(uint8_t advertisementData[], size_t size)
-{
+void sendAdvertisement(uint8_t advertisementData[], size_t size) {
   BLEAdvertisingData advData;
   advData.setRawData(advertisementData, size);
   BLE.setAdvertisingData(advData);
@@ -99,6 +94,5 @@ void sendAdvertisement(uint8_t advertisementData[], size_t size)
   Serial.println("Raw advertising ended!");
 }
 
-void loop()
-{
+void loop() {
 }
