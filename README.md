@@ -65,7 +65,7 @@ The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not
 Refer to the directory `./examples`  for specific library implementations.
 
 - ESPHome BLE proxy configuration [.\examples\esphome\ble-proxy.yaml](.\examples\esphome\ble-proxy.yaml)
-- DFRobot ESP32 Firebeetle 2 C6 using ArduinoBLE  [./examples/FireBeetle2C6/FireBeetle2C6.ino](./examples/FireBeetle2C6/FireBeetle2C6.ino)
+- DFRobot ESP32 Firebeetle 2 C6 + DHT11 Temperature and Humidity using ArduinoBLE  [./examples/FireBeetle2C6/FireBeetle2C6.ino](./examples/FireBeetle2C6/FireBeetle2C6.ino)
 - NimBLE BLE Library  [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
 
 ## Usage
