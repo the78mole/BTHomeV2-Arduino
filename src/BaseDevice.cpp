@@ -18,16 +18,16 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
   resetMeasurement();
 }
 
-// BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased,
-//                        uint8_t encryptionKey[ENCRYPTION_KEY_LENGTH], const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
-//     : BaseDevice(shortName, completeName, isTriggerBased)
-// {
-//   _useEncryption = true;
+BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased,
+                       uint8_t encryptionKey[ENCRYPTION_KEY_LENGTH], const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
+    : BaseDevice(shortName, completeName, isTriggerBased)
+{
+  _useEncryption = true;
 
-//   memcpy(_macAddress, macAddress, BLE_MAC_ADDRESS_LENGTH);
-//   mbedtls_ccm_init(&this->_encryptCTX);
-//   mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, encryptionKey, ENCRYPTION_KEY_LENGTH * 8);
-// }
+  memcpy(_macAddress, macAddress, BLE_MAC_ADDRESS_LENGTH);
+  mbedtls_ccm_init(&this->_encryptCTX);
+  mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, encryptionKey, ENCRYPTION_KEY_LENGTH * 8);
+}
 
 /// @brief Clear the measurement data.
 void BaseDevice::resetMeasurement()
