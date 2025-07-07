@@ -35,5 +35,6 @@ private:
   bool hasEnoughSpace(uint8_t size);
   template <typename T>
   bool addInteger(BtHomeType sensor, T value);
-  bool _triggerDevice;
+  bool _triggerDevice = false;
+  bool _useEncryption = false;
 };

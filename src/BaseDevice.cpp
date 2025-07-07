@@ -164,6 +164,11 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 
   uint8_t indicatorByte = FLAG_VERSION;
 
+  if (_useEncryption)
+  {
+    indicatorByte |= FLAG_ENCRYPT;
+  }
+
   if (_triggerDevice)
   {
     indicatorByte |= FLAG_TRIGGER;
