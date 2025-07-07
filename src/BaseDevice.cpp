@@ -18,6 +18,17 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
   resetMeasurement();
 }
 
+// BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased,
+//                        uint8_t encryptionKey[ENCRYPTION_KEY_LENGTH], const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
+//     : BaseDevice(shortName, completeName, isTriggerBased)
+// {
+//   _useEncryption = true;
+
+//   memcpy(_macAddress, macAddress, BLE_MAC_ADDRESS_LENGTH);
+//   mbedtls_ccm_init(&this->_encryptCTX);
+//   mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, encryptionKey, ENCRYPTION_KEY_LENGTH * 8);
+// }
+
 /// @brief Clear the measurement data.
 void BaseDevice::resetMeasurement()
 {
@@ -38,8 +49,9 @@ bool BaseDevice::hasEnoughSpace(uint8_t size)
 {
   // the index is at the next entry point, so there is one byte extra
   static const uint8_t CURRENT_BYTE = 1;
-  int remainingBytes = (MAX_MEASUREMENT_SIZE - _sensorDataIdx) + CURRENT_BYTE;
-  return remainingBytes >= size; // include sensor indicator byte
+  static const uint8_t ENCRYPTION_ADDITIONAL_BYTES = 8;
+  int remainingBytes = (MAX_MEASUREMENT_SIZE - _sensorDataIdx) + CURRENT_BYTE - (_useEncryption ? ENCRYPTION_ADDITIONAL_BYTES: 0);
+  return remainingBytes >= size;
 }
 
 /// @brief Add a state or step value to the sensor data packet.
@@ -176,10 +188,51 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 
   buffer[idx++] = indicatorByte;
 
-  // Sensor Data
-  for (size_t i = 0; i < _sensorDataIdx; i++)
-    buffer[idx++] = _sensorData[i];
+  if (_useEncryption)
+  {
+    uint8_t ciphertext[MAX_ADVERTISEMENT_SIZE];
+    uint8_t encryptionTag[MIC_LEN];
+    uint8_t nonce[NONCE_LEN];
+    uint8_t *countPtr = (uint8_t *)(&this->_encryptCount);
 
+    nonce[0] = _macAddress[5];
+    nonce[1] = _macAddress[4];
+    nonce[2] = _macAddress[3];
+    nonce[3] = _macAddress[2];
+    nonce[4] = _macAddress[1];
+    nonce[5] = _macAddress[0];
+    nonce[6] = UUID1;
+    nonce[7] = UUID2;
+    nonce[8] = FLAG_VERSION | FLAG_ENCRYPT; // TODO: should this be the same as the indicator byte?
+    memcpy(&nonce[9], countPtr, 4);
+
+    // encrypt sensorData
+    mbedtls_ccm_encrypt_and_tag(&this->_encryptCTX, this->_sensorDataIdx, nonce, NONCE_LEN, 0, 0,
+                                &this->_sensorData[0], &ciphertext[0], encryptionTag,
+                                MIC_LEN);
+    for (uint8_t i = 0; i < _sensorDataIdx; i++)
+    {
+      buffer[idx++] = ciphertext[i];
+    }
+    // writeCounter
+    buffer[idx++] = nonce[9];
+    buffer[idx++] = nonce[10];
+    buffer[idx++] = nonce[11];
+    buffer[idx++] = nonce[12];
+    this->_encryptCount++;
+    // writeMIC
+    buffer[idx++] = encryptionTag[0];
+    buffer[idx++] = encryptionTag[1];
+    buffer[idx++] = encryptionTag[2];
+    buffer[idx++] = encryptionTag[3];
+  }
+  else
+  {
+    // Sensor Data
+    for (size_t i = 0; i < _sensorDataIdx; i++)
+      buffer[idx++] = _sensorData[i];
+  }
+  
   // prefer long name
   size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
   bool canFitLongName = idx + TYPE_INDICATOR_SIZE + completeNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;

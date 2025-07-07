@@ -9,12 +9,13 @@ static const size_t TYPE_INDICATOR_SIZE = 1;
 static const size_t NULL_TERMINATOR_SIZE = 1;
 static const size_t ENCRYPTION_KEY_LENGTH = 16;
 static const size_t BLE_MAC_ADDRESS_LENGTH = 6;
-static const size_t NONCE_LEN =  13;
-static const size_t MIC_LEN =  4;
+static const size_t NONCE_LEN = 13;
+static const size_t MIC_LEN = 4;
 
 class BaseDevice
 {
 public:
+  // BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t encryptionKey[ENCRYPTION_KEY_LENGTH],const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH]);
   BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased);
   size_t getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE]);
   void resetMeasurement();
@@ -37,4 +38,7 @@ private:
   bool addInteger(BtHomeType sensor, T value);
   bool _triggerDevice = false;
   bool _useEncryption = false;
+  uint32_t _encryptCount = 0;
+  mbedtls_ccm_context _encryptCTX;
+  uint8_t _macAddress[BLE_MAC_ADDRESS_LENGTH];
 };
