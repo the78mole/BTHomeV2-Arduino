@@ -6,6 +6,8 @@
 #include <Arduino.h>
 #include "BaseDevice.h"
 
+#include "mbedtls/ccm.h"
+
 /**
  * @file BTHome.h
  * @brief BTHome v2 sensor data setter methods with summaries.
