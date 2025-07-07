@@ -6,7 +6,6 @@
 #include <Arduino.h>
 #include "BaseDevice.h"
 
-#include "mbedtls/ccm.h"
 
 /**
  * @file BTHome.h
