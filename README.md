@@ -38,6 +38,9 @@ Wifi is
 
 Zigbee / ZWave is also an alternative
 - Very cool technologies
+- Slightly heavier power usage than BLE 
+- Requires being connected to a network
+- More suitable for "always on" deployments
 - Natively works on ESP32 C6 and H2 boards
 - [Examples and libraries](https://github.com/espressif/arduino-esp32/tree/master/libraries/Zigbee)
 - Can't debug using a phone
