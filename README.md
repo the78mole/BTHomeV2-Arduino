@@ -36,9 +36,17 @@ Wifi is
 
 ## Supported Platforms
 
+### Recommended boards
+
+Seeed and DFRobot both make very good low power boards such as the DFRobot FireBeetle2. 
+
+Any purpose built low power boards should work but AVOID cheap clones. Cheap boards often use linear power regulators which eat batteries.  
+
 ### Home Assistant + esphome
 
-Connection through ESPHome requires the use of a ESP32 as a Bluetooth BLE Proxy. I recommend using the *nodemcu32* as this *just works!*
+#### BT Proxy for ESPHome
+
+Connection through ESPHome requires the use of a permanently powered on ESP32 as a Bluetooth BLE Proxy. I recommend using the *nodemcu32* for this as it *just works!*
 Get the `ESP32-WROOM-32U` with the external antenna for the best range.
 There is an example config for the BT proxy in the examples folder.
 
