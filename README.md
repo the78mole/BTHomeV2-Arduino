@@ -70,6 +70,9 @@ Refer to the directory `./examples`  for specific library implementations.
 
 ## Usage
 
+This provides a non encrypted client that can send non encrypted data. 
+[Encryption is also possible](.\examples\NimBLE_Encryption\NimBLE_Encryption.ino)
+
 ```cpp
   // Short or long name sent based on packet size
   BtHomeV2Device btHome("short_name", "My longer device name", false);
@@ -114,9 +117,9 @@ Thanks to @Bluetooth-Devices for the docs
 
 ## Implementation Progress
 
-### No Encryption currently planned
+### Encryption is supported!
 
-I'm currently not looking at encryption. I might look at implementing it in the future.
+Take a look at [.\examples\NimBLE_Encryption\NimBLE_Encryption.ino](.\examples\NimBLE_Encryption\NimBLE_Encryption.ino)
 
 ### Data Types 
 
