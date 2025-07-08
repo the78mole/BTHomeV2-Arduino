@@ -28,11 +28,17 @@ A BLE Advertisement, which is used by BTHome:
 - requires no connection.
 - is fast to send, only taking a few milliseconds. 
 - the wake, sense, send, sleep cycle can be less than a second
+- can be debugged using a BLE scanner on your phone
 
 Wifi is
 - slow to connect, 
 - requires handshakes and IP resolutions
 - uses MUCH more power 
+
+Zigbee / ZWave
+- Very cool technologies
+- Harder to develop (maybe there is something like this?)
+- Can't debug using a phone
 
 ## Supported Platforms
 
@@ -65,7 +71,7 @@ Arduino IDE is supported by this library, and has the best board support for Ard
 
 ### VSCode + PlatformIO
 
-This code should with PlatformIO too, but it's secondary to the Arduino IDE. 
+This code works with PlatformIO too, but it's secondary to the Arduino IDE. 
 The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not supported by PlatformIO (at time of writing).
 
 ## Example code and config
@@ -75,6 +81,7 @@ Refer to the directory `./examples`  for specific library implementations.
 - ESPHome BLE proxy configuration [./examples/esphome/ble-proxy.yaml](./examples/esphome/ble-proxy.yaml)
 - DFRobot ESP32 Firebeetle 2 C6 + DHT11 Temperature and Humidity using ArduinoBLE  [./examples/FireBeetle2C6/FireBeetle2C6.ino](./examples/FireBeetle2C6/FireBeetle2C6.ino)
 - NimBLE BLE Library  [./examples/NimBLE/NimBLE.ino](./examples/NimBLE/NimBLE.ino)
+- Encryption [./examples/NimBLE_Encryption/NimBLE_Encryption.ino](./examples/NimBLE_Encryption/NimBLE_Encryption.ino)
 
 ## Usage
 
