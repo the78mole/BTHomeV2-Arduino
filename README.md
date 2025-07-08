@@ -24,7 +24,8 @@ BTHome makes it easier to add very low power sensing devices to your Home Networ
 
 Power usage is the main consideration.
 
-A BLE Advertisement, which is used by BTHome:  
+A BLE Advertisement, which is used by BTHome:
+- Works on any BLE capable board 
 - requires no connection.
 - is fast to send, only taking a few milliseconds. 
 - the wake, sense, send, sleep cycle can be less than a second
@@ -35,9 +36,10 @@ Wifi is
 - requires handshakes and IP resolutions
 - uses MUCH more power 
 
-Zigbee / ZWave
+Zigbee / ZWave is also an alternative
 - Very cool technologies
-- Harder to develop (maybe there is something like this?)
+- Natively works on ESP32 C6 and H2 boards
+- [Examples and libraries](https://github.com/espressif/arduino-esp32/tree/master/libraries/Zigbee)
 - Can't debug using a phone
 
 ## Supported Platforms
