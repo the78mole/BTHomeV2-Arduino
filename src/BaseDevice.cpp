@@ -19,14 +19,32 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 }
 
 BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased,
-                       uint8_t encryptionKey[ENCRYPTION_KEY_LENGTH], const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
+                       uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
     : BaseDevice(shortName, completeName, isTriggerBased)
 {
   _useEncryption = true;
 
+  memcpy(bindKey, key, sizeof(uint8_t) * BIND_KEY_LEN);
+  // Print the encryption key as a string for BTHome (hex, no spaces, lowercase)
+  Serial.print("Encryption Key (BTHome format): ");
+  for (size_t i = 0; i < ENCRYPTION_KEY_LENGTH; i++)
+  {
+    if (bindKey[i] < 0x10)
+      Serial.print('0');
+    Serial.print(bindKey[i], HEX);
+  }
+
+  Serial.println();
   memcpy(_macAddress, macAddress, BLE_MAC_ADDRESS_LENGTH);
+
+  Serial.println("Setting up the keys");
+  delay(50);
+
   mbedtls_ccm_init(&this->_encryptCTX);
-  mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, encryptionKey, ENCRYPTION_KEY_LENGTH * 8);
+  mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, bindKey, ENCRYPTION_KEY_LENGTH * 8);
+
+  Serial.println("Keys set up");
+  delay(50);
 }
 
 /// @brief Clear the measurement data.
@@ -49,8 +67,8 @@ bool BaseDevice::hasEnoughSpace(uint8_t size)
 {
   // the index is at the next entry point, so there is one byte extra
   static const uint8_t CURRENT_BYTE = 1;
-  static const uint8_t ENCRYPTION_ADDITIONAL_BYTES = 8;
-  int remainingBytes = (MAX_MEASUREMENT_SIZE - _sensorDataIdx) + CURRENT_BYTE - (_useEncryption ? ENCRYPTION_ADDITIONAL_BYTES: 0);
+
+  int remainingBytes = (MAX_MEASUREMENT_SIZE - _sensorDataIdx) + CURRENT_BYTE - (_useEncryption ? ENCRYPTION_ADDITIONAL_BYTES : 0);
   return remainingBytes >= size;
 }
 
@@ -158,116 +176,213 @@ bool BaseDevice::addRaw(uint8_t sensorId, uint8_t *value, uint8_t size)
   return true;
 }
 
+/*PLAIN SENSOR DATA: 10 01 10 01
+NONCE: E0 5A 1B 6C 2E 72 D2 FC 41 01 00 00 00
+KEY: 23 1D 39 C1 D7 CC 1A B1 AE E2 24 CD 09 6D B9 32
+MAC: 72 2E 6C 1B 5A E0
+MAC (reversed for nonce): E0 5A 1B 6C 2E 72
+COUNTER: 1 01 00 00 00
+CIPHERTEXT: CF 24 4F 9F
+ENCRYPTION TAG: B4 30 0F B4
+FULL ADVERTISEMENT: 02 01 06 10 16 D2 FC 41 CF 24 4F 9F 01 00 00 00 B4 30 0F B4 */
+
 size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 {
-  size_t idx = 0; // Tracks the next write position in buffer
+  std::string payloadData = "";
+  std::string serviceData = "";
+  uint8_t i;
 
-  // 1. Flags
-  buffer[idx++] = FLAG1;
-  buffer[idx++] = FLAG2;
-  buffer[idx++] = FLAG3;
+  // head
+  payloadData += FLAG1;
+  payloadData += FLAG2;
+  payloadData += FLAG3;
 
-  // 3. Service Data
-  static const uint8_t UUID_AND_HEADER_LENGTH = 3;
-  buffer[idx++] = UUID_AND_HEADER_LENGTH + TYPE_INDICATOR_SIZE + _sensorDataIdx; // Packet length =  Service Data length (UUID(2) + header(1) + sensorData)
-  buffer[idx++] = SERVICE_DATA;                                                  // 0x16
-  buffer[idx++] = UUID1;                                                         // 0xD2
-  buffer[idx++] = UUID2;                                                         // 0xFC
-
-  uint8_t indicatorByte = FLAG_VERSION;
-
+  serviceData += SERVICE_DATA; // DO NOT CHANGE -- Service Data - 16-bit UUID
+  serviceData += UUID1;        // DO NOT CHANGE -- UUID
+  serviceData += UUID2;        // DO NOT CHANGE -- UUID
+  // The encryption
   if (_useEncryption)
   {
-    indicatorByte |= FLAG_ENCRYPT;
-  }
+    if (_triggerDevice)
+      serviceData += ENCRYPT_TRIGGER_BASE;
+    else
+      serviceData += ENCRYPT;
 
-  if (_triggerDevice)
-  {
-    indicatorByte |= FLAG_TRIGGER;
-  }
-
-  buffer[idx++] = indicatorByte;
-
-  if (_useEncryption)
-  {
     uint8_t ciphertext[MAX_ADVERTISEMENT_SIZE];
     uint8_t encryptionTag[MIC_LEN];
     uint8_t nonce[NONCE_LEN];
-    uint8_t *countPtr = (uint8_t *)(&this->_encryptCount);
+    uint8_t *countPtr = (uint8_t *)(&this->_counter);
+    const uint8_t *addrs = _macAddress;
 
-    nonce[0] = _macAddress[5];
-    nonce[1] = _macAddress[4];
-    nonce[2] = _macAddress[3];
-    nonce[3] = _macAddress[2];
-    nonce[4] = _macAddress[1];
-    nonce[5] = _macAddress[0];
+    nonce[0] = addrs[5];
+    nonce[1] = addrs[4];
+    nonce[2] = addrs[3];
+    nonce[3] = addrs[2];
+    nonce[4] = addrs[1];
+    nonce[5] = addrs[0];
     nonce[6] = UUID1;
     nonce[7] = UUID2;
-    nonce[8] = FLAG_VERSION | FLAG_ENCRYPT; // TODO: should this be the same as the indicator byte?
+    nonce[8] = ENCRYPT;
     memcpy(&nonce[9], countPtr, 4);
 
-    // encrypt sensorData
-    mbedtls_ccm_encrypt_and_tag(&this->_encryptCTX, this->_sensorDataIdx, nonce, NONCE_LEN, 0, 0,
-                                &this->_sensorData[0], &ciphertext[0], encryptionTag,
-                                MIC_LEN);
-    for (uint8_t i = 0; i < _sensorDataIdx; i++)
+    // ======= PRINT THE BUFFERS =======
+    Serial.print("PLAIN SENSOR DATA: ");
+    for (uint8_t k = 0; k < _sensorDataIdx; k++)
     {
-      buffer[idx++] = ciphertext[i];
+      if (_sensorData[k] < 16)
+        Serial.print('0');
+      Serial.print(_sensorData[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    Serial.print("NONCE: ");
+    for (uint8_t k = 0; k < NONCE_LEN; k++)
+    {
+      if (nonce[k] < 16)
+        Serial.print('0');
+      Serial.print(nonce[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    Serial.print("KEY: ");
+    for (uint8_t k = 0; k < BIND_KEY_LEN; k++)
+    {
+      if (bindKey[k] < 16)
+        Serial.print('0');
+      Serial.print(bindKey[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    // ==================================
+
+    // Print MAC (in normal and reversed order)
+    Serial.print("MAC: ");
+    for (int k = 0; k < 6; k++)
+    {
+      if (addrs[k] < 16)
+        Serial.print('0');
+      Serial.print(addrs[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    Serial.print("MAC (reversed for nonce): ");
+    for (int k = 5; k >= 0; k--)
+    {
+      if (addrs[k] < 16)
+        Serial.print('0');
+      Serial.print(addrs[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    // Print counter value as bytes
+    Serial.print("COUNTER: ");
+
+    Serial.print(this->_counter);
+    Serial.print(" ");
+
+    for (uint8_t k = 0; k < 4; k++)
+    {
+      uint8_t b = countPtr[k];
+      if (b < 16)
+        Serial.print('0');
+      Serial.print(b, HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    mbedtls_ccm_encrypt_and_tag(&_encryptCTX, _sensorDataIdx, nonce, NONCE_LEN, 0, 0,
+                                &_sensorData[0], &ciphertext[0], encryptionTag,
+                                MIC_LEN);
+
+    Serial.print("CIPHERTEXT: ");
+    for (uint8_t k = 0; k < _sensorDataIdx; k++)
+    {
+      if (ciphertext[k] < 16)
+        Serial.print('0');
+      Serial.print(ciphertext[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    Serial.print("ENCRYPTION TAG: ");
+    for (uint8_t k = 0; k < MIC_LEN; k++)
+    {
+      if (encryptionTag[k] < 16)
+        Serial.print('0');
+      Serial.print(encryptionTag[k], HEX);
+      Serial.print(' ');
+    }
+    Serial.println();
+
+    // ==================================
+
+    for (i = 0; i < _sensorDataIdx; i++)
+    {
+      serviceData += ciphertext[i];
     }
     // writeCounter
-    buffer[idx++] = nonce[9];
-    buffer[idx++] = nonce[10];
-    buffer[idx++] = nonce[11];
-    buffer[idx++] = nonce[12];
-    this->_encryptCount++;
+    serviceData += nonce[9];
+    serviceData += nonce[10];
+    serviceData += nonce[11];
+    serviceData += nonce[12];
+    // this->_counter++;
     // writeMIC
-    buffer[idx++] = encryptionTag[0];
-    buffer[idx++] = encryptionTag[1];
-    buffer[idx++] = encryptionTag[2];
-    buffer[idx++] = encryptionTag[3];
+    serviceData += encryptionTag[0];
+    serviceData += encryptionTag[1];
+    serviceData += encryptionTag[2];
+    serviceData += encryptionTag[3];
   }
   else
   {
-    // Sensor Data
-    for (size_t i = 0; i < _sensorDataIdx; i++)
-      buffer[idx++] = _sensorData[i];
-  }
-  
-  // prefer long name
-  size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
-  bool canFitLongName = idx + TYPE_INDICATOR_SIZE + completeNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
-  if (canFitLongName)
-  {
-    buffer[idx++] = completeNameLength + TYPE_INDICATOR_SIZE;
-    buffer[idx++] = COMPLETE_NAME;
-    memcpy(&buffer[idx], _completeName, completeNameLength);
-    idx += completeNameLength;
+    if (_triggerDevice)
+      serviceData += NO_ENCRYPT_TRIGGER_BASE;
+    else
+      serviceData += NO_ENCRYPT;
+    for (i = 0; i < _sensorDataIdx; i++)
+    {
+      serviceData += _sensorData[i]; // Add the sensor data to the Service Data
+    }
   }
 
-  size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
-  bool canFitShortName = idx + TYPE_INDICATOR_SIZE + shortNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
-  if (canFitShortName)
-  {
-    buffer[idx++] = shortNameLength + TYPE_INDICATOR_SIZE;
-    buffer[idx++] = SHORT_NAME; // 0x08 for short name
-    memcpy(&buffer[idx], _shortName, shortNameLength);
-    idx += shortNameLength;
-  }
+  byte sd_length = serviceData.length(); // Generate the length of the Service Data
+  payloadData += sd_length;              // Add the length of the Service Data
+  payloadData += serviceData;            // Finalize the packet
 
-#ifdef BTHOME_DEBUG
-  Serial.print("Advertisement: ");
-  for (size_t i = 0; i < idx; i++)
+  // ----- Copy payloadData into buffer -----
+  size_t payloadLen = payloadData.length();
+  for (size_t j = 0; j < payloadLen; j++)
   {
-    if (buffer[i] < 16)
-      Serial.print('0');
-    Serial.print(buffer[i], HEX);
-    Serial.print(' ');
+    buffer[j] = payloadData[j];
   }
-  Serial.println();
-  Serial.print(" (size: ");
-  Serial.print(idx);
-  Serial.println(" bytes)");
-#endif
-
-  return idx; // Number of bytes written to buffer
+  return payloadLen;
 }
+
+void BaseDevice::writeEncryptedPayload(uint8_t serviceDataBuffer[MAX_ADVERTISEMENT_SIZE], uint8_t *index)
+{
+}
+
+// // prefer long name
+// size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
+// bool canFitLongName = idx + TYPE_INDICATOR_SIZE + completeNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
+// if (canFitLongName)
+// {
+//   buffer[idx++] = completeNameLength + TYPE_INDICATOR_SIZE;
+//   buffer[idx++] = COMPLETE_NAME;
+//   memcpy(&buffer[idx], _completeName, completeNameLength);
+//   idx += completeNameLength;
+// }
+
+// size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
+// bool canFitShortName = idx + TYPE_INDICATOR_SIZE + shortNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
+// if (canFitShortName)
+// {
+//   buffer[idx++] = shortNameLength + TYPE_INDICATOR_SIZE;
+//   buffer[idx++] = SHORT_NAME; // 0x08 for short name
+//   memcpy(&buffer[idx], _shortName, shortNameLength);
+//   idx += shortNameLength;
+// }

@@ -6,12 +6,10 @@
 #include <Arduino.h>
 #include "BaseDevice.h"
 
-
 /**
  * @file BTHome.h
  * @brief BTHome v2 sensor data setter methods with summaries.
  */
-
 
 /// @brief Battery state options
 enum BATTERY_STATE
@@ -28,6 +26,8 @@ public:
     /// @param completeName  Full name of the device - sent when space is available. Max 20 characters
     /// @param isTriggerDevice - If the device sends data when triggered
     BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerDevice);
+    BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH]);
+
     size_t getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE]);
 
     void clearMeasurementData();
