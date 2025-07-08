@@ -188,25 +188,24 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   if (_useEncryption)
   {
     if (_triggerDevice)
-      serviceData[serviceDataIndex++] = ENCRYPT_TRIGGER_BASE;
+      serviceData[serviceDataIndex++] = FLAG_ENCRYPT | FLAG_VERSION | FLAG_TRIGGER;
     else
-      serviceData[serviceDataIndex++] = ENCRYPT;
+      serviceData[serviceDataIndex++] = FLAG_ENCRYPT | FLAG_VERSION;
 
     uint8_t ciphertext[MAX_ADVERTISEMENT_SIZE];
     uint8_t encryptionTag[MIC_LEN];
     uint8_t nonce[NONCE_LEN];
     uint8_t *countPtr = (uint8_t *)(&this->_counter);
-    const uint8_t *addrs = _macAddress;
-
-    nonce[0] = addrs[5];
-    nonce[1] = addrs[4];
-    nonce[2] = addrs[3];
-    nonce[3] = addrs[2];
-    nonce[4] = addrs[1];
-    nonce[5] = addrs[0];
+    
+    nonce[0] = _macAddress[5];
+    nonce[1] = _macAddress[4];
+    nonce[2] = _macAddress[3];
+    nonce[3] = _macAddress[2];
+    nonce[4] = _macAddress[1];
+    nonce[5] = _macAddress[0];
     nonce[6] = UUID1;
     nonce[7] = UUID2;
-    nonce[8] = ENCRYPT;
+    nonce[8] = FLAG_VERSION | FLAG_ENCRYPT;
     memcpy(&nonce[9], countPtr, 4);
 
     mbedtls_ccm_encrypt_and_tag(&_encryptCTX, _sensorDataIdx, nonce, NONCE_LEN, 0, 0,
@@ -222,7 +221,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
     serviceData[serviceDataIndex++] = nonce[10];
     serviceData[serviceDataIndex++] = nonce[11];
     serviceData[serviceDataIndex++] = nonce[12];
-    // this->_counter++;
+    this->_counter++;
     // writeMIC
     serviceData[serviceDataIndex++] = encryptionTag[0];
     serviceData[serviceDataIndex++] = encryptionTag[1];
@@ -254,30 +253,36 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
     buffer[bufferDataIndex++] = serviceData[i];
     /* code */
   }
+
+#define CURRENT_BYTE 1
+
+  // prefer long name
+size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
+bool canFitLongName = bufferDataIndex + completeNameLength + TYPE_INDICATOR_SIZE + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
+if (canFitLongName)
+{
+  buffer[bufferDataIndex++] = completeNameLength + TYPE_INDICATOR_SIZE;
+  buffer[bufferDataIndex++] = COMPLETE_NAME;
+  memcpy(&buffer[bufferDataIndex], _completeName, completeNameLength);
+  bufferDataIndex += completeNameLength;
+}
+
+size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
+bool canFitShortName = bufferDataIndex + TYPE_INDICATOR_SIZE + shortNameLength + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
+if (canFitShortName)
+{
+  buffer[bufferDataIndex++] = shortNameLength + TYPE_INDICATOR_SIZE;
+  buffer[bufferDataIndex++] = SHORT_NAME; // 0x08 for short name
+  memcpy(&buffer[bufferDataIndex], _shortName, shortNameLength);
+  bufferDataIndex += shortNameLength;
+}
   return bufferDataIndex;
+
+
 }
 
 void BaseDevice::writeEncryptedPayload(uint8_t serviceDataBuffer[MAX_ADVERTISEMENT_SIZE], uint8_t *index)
 {
 }
 
-// // prefer long name
-// size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
-// bool canFitLongName = idx + TYPE_INDICATOR_SIZE + completeNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
-// if (canFitLongName)
-// {
-//   buffer[idx++] = completeNameLength + TYPE_INDICATOR_SIZE;
-//   buffer[idx++] = COMPLETE_NAME;
-//   memcpy(&buffer[idx], _completeName, completeNameLength);
-//   idx += completeNameLength;
-// }
 
-// size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
-// bool canFitShortName = idx + TYPE_INDICATOR_SIZE + shortNameLength + 1 <= MAX_ADVERTISEMENT_SIZE;
-// if (canFitShortName)
-// {
-//   buffer[idx++] = shortNameLength + TYPE_INDICATOR_SIZE;
-//   buffer[idx++] = SHORT_NAME; // 0x08 for short name
-//   memcpy(&buffer[idx], _shortName, shortNameLength);
-//   idx += shortNameLength;
-// }

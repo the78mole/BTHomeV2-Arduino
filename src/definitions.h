@@ -13,15 +13,16 @@
 #define UUID2 0xFC
 #define SERVICE_DATA 0x16
 
+
+#define FLAG_TRIGGER    0x04
+#define FLAG_ENCRYPT    0x01
+#define FLAG_VERSION 	0x40
+
 #define NO_ENCRYPT 0x40
 #define NO_ENCRYPT_TRIGGER_BASE 0x44
-#define ENCRYPT 0x41
-#define ENCRYPT_TRIGGER_BASE 0x45
 
 
-#define FLAG_TRIGGER    0b00000100
-#define FLAG_ENCRYPT    0b00000001
-#define FLAG_VERSION  	0b01000000
+
 
 
 #define SHORT_NAME 0x08
