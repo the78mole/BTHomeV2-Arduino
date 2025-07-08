@@ -18,7 +18,7 @@ static const size_t MIC_LEN = 4;
 class BaseDevice
 {
 public:
-  BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH]);
+  BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH], uint32_t counter);
   BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased);
   size_t getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE]);
   void resetMeasurement();

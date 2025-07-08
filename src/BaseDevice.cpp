@@ -19,11 +19,12 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 }
 
 BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isTriggerBased,
-                       uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH])
+                       uint8_t const *const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH], uint32_t counter)
     : BaseDevice(shortName, completeName, isTriggerBased)
 {
   _useEncryption = true;
-
+  _counter = counter;
+  
   memcpy(bindKey, key, sizeof(uint8_t) * BIND_KEY_LEN);
   // Print the encryption key as a string for BTHome (hex, no spaces, lowercase)
   Serial.print("Encryption Key (BTHome format): ");

@@ -17,7 +17,7 @@ BtHomeV2Device::BtHomeV2Device(const char *shortName, const char *completeName, 
 {
 }
 
-BtHomeV2Device::BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t const* const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH]) : _baseDevice(shortName, completeName, isTriggerBased, key, macAddress){
+BtHomeV2Device::BtHomeV2Device(const char *shortName, const char *completeName, bool isTriggerBased, uint8_t const* const key, const uint8_t macAddress[BLE_MAC_ADDRESS_LENGTH], uint32_t counter) : _baseDevice(shortName, completeName, isTriggerBased, key, macAddress, counter){
 }
 
 bool BtHomeV2Device::addTemperature_neg44_to_44_Resolution_0_35(float degreesCelsius)
