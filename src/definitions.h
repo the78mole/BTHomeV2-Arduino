@@ -18,12 +18,6 @@
 #define FLAG_ENCRYPT    0x01
 #define FLAG_VERSION 	0x40
 
-#define NO_ENCRYPT 0x40
-#define NO_ENCRYPT_TRIGGER_BASE 0x44
-
-
-
-
 
 #define SHORT_NAME 0x08
 #define COMPLETE_NAME 0x09

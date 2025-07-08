@@ -184,19 +184,30 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   serviceData[serviceDataIndex++] = SERVICE_DATA; // DO NOT CHANGE -- Service Data - 16-bit UUID
   serviceData[serviceDataIndex++] = UUID1;        // DO NOT CHANGE -- UUID
   serviceData[serviceDataIndex++] = UUID2;        // DO NOT CHANGE -- UUID
+
+  char indicatorByte = FLAG_VERSION;
+
+  if (_triggerDevice)
+  {
+    indicatorByte |= FLAG_TRIGGER;
+  }
+
+  if (_useEncryption)
+  {
+    indicatorByte |= FLAG_ENCRYPT;
+  }
+
+  serviceData[serviceDataIndex++] = indicatorByte;
+
   // The encryption
   if (_useEncryption)
   {
-    if (_triggerDevice)
-      serviceData[serviceDataIndex++] = FLAG_ENCRYPT | FLAG_VERSION | FLAG_TRIGGER;
-    else
-      serviceData[serviceDataIndex++] = FLAG_ENCRYPT | FLAG_VERSION;
 
     uint8_t ciphertext[MAX_ADVERTISEMENT_SIZE];
     uint8_t encryptionTag[MIC_LEN];
     uint8_t nonce[NONCE_LEN];
     uint8_t *countPtr = (uint8_t *)(&this->_counter);
-    
+
     nonce[0] = _macAddress[5];
     nonce[1] = _macAddress[4];
     nonce[2] = _macAddress[3];
@@ -230,10 +241,6 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   }
   else
   {
-    if (_triggerDevice)
-      serviceData[serviceDataIndex++] = NO_ENCRYPT_TRIGGER_BASE;
-    else
-      serviceData[serviceDataIndex++] = NO_ENCRYPT;
     for (uint8_t i = 0; i < _sensorDataIdx; i++)
     {
       serviceData[serviceDataIndex++] = _sensorData[i]; // Add the sensor data to the Service Data
@@ -245,7 +252,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   buffer[bufferDataIndex++] = FLAG1;
   buffer[bufferDataIndex++] = FLAG2;
   buffer[bufferDataIndex++] = FLAG3;
-  byte sd_length = serviceDataIndex;      // Generate the length of the Service Data
+  byte sd_length = serviceDataIndex;     // Generate the length of the Service Data
   buffer[bufferDataIndex++] = sd_length; // Add the length of the Service Data
 
   for (size_t i = 0; i < serviceDataIndex; i++)
@@ -257,32 +264,28 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 #define CURRENT_BYTE 1
 
   // prefer long name
-size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
-bool canFitLongName = bufferDataIndex + completeNameLength + TYPE_INDICATOR_SIZE + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
-if (canFitLongName)
-{
-  buffer[bufferDataIndex++] = completeNameLength + TYPE_INDICATOR_SIZE;
-  buffer[bufferDataIndex++] = COMPLETE_NAME;
-  memcpy(&buffer[bufferDataIndex], _completeName, completeNameLength);
-  bufferDataIndex += completeNameLength;
-}
+  size_t completeNameLength = strnlen(_completeName, MAX_LENGTH_COMPLETE_NAME);
+  bool canFitLongName = bufferDataIndex + completeNameLength + TYPE_INDICATOR_SIZE + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
+  if (canFitLongName)
+  {
+    buffer[bufferDataIndex++] = completeNameLength + TYPE_INDICATOR_SIZE;
+    buffer[bufferDataIndex++] = COMPLETE_NAME;
+    memcpy(&buffer[bufferDataIndex], _completeName, completeNameLength);
+    bufferDataIndex += completeNameLength;
+  }
 
-size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
-bool canFitShortName = bufferDataIndex + TYPE_INDICATOR_SIZE + shortNameLength + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
-if (canFitShortName)
-{
-  buffer[bufferDataIndex++] = shortNameLength + TYPE_INDICATOR_SIZE;
-  buffer[bufferDataIndex++] = SHORT_NAME; // 0x08 for short name
-  memcpy(&buffer[bufferDataIndex], _shortName, shortNameLength);
-  bufferDataIndex += shortNameLength;
-}
+  size_t shortNameLength = strnlen(_shortName, MAX_LENGTH_SHORT_NAME);
+  bool canFitShortName = bufferDataIndex + TYPE_INDICATOR_SIZE + shortNameLength + CURRENT_BYTE <= MAX_ADVERTISEMENT_SIZE;
+  if (canFitShortName)
+  {
+    buffer[bufferDataIndex++] = shortNameLength + TYPE_INDICATOR_SIZE;
+    buffer[bufferDataIndex++] = SHORT_NAME; // 0x08 for short name
+    memcpy(&buffer[bufferDataIndex], _shortName, shortNameLength);
+    bufferDataIndex += shortNameLength;
+  }
   return bufferDataIndex;
-
-
 }
 
 void BaseDevice::writeEncryptedPayload(uint8_t serviceDataBuffer[MAX_ADVERTISEMENT_SIZE], uint8_t *index)
 {
 }
-
-
