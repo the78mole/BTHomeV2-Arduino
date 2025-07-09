@@ -24,21 +24,40 @@ BTHome makes it easier to add very low power sensing devices to your Home Networ
 
 Power usage is the main consideration.
 
-A BLE Advertisement, which is used by BTHome:  
+A BLE Advertisement, which is used by BTHome:
+- Works on any BLE capable board 
 - requires no connection.
 - is fast to send, only taking a few milliseconds. 
 - the wake, sense, send, sleep cycle can be less than a second
+- can be debugged using a BLE scanner on your phone
 
 Wifi is
 - slow to connect, 
 - requires handshakes and IP resolutions
 - uses MUCH more power 
 
+Zigbee / ZWave is also an alternative
+- Very cool technologies
+- Slightly heavier power usage than BLE 
+- Requires being connected to a network
+- More suitable for "always on" deployments
+- Natively works on ESP32 C6 and H2 boards
+- [Examples and libraries](https://github.com/espressif/arduino-esp32/tree/master/libraries/Zigbee)
+- Can't debug using a phone
+
 ## Supported Platforms
+
+### Recommended boards
+
+Seeed and DFRobot both make very good low power boards such as the DFRobot FireBeetle2. 
+
+Any purpose built low power boards should work but AVOID cheap clones. Cheap boards often use linear power regulators which eat batteries.  
 
 ### Home Assistant + esphome
 
-Connection through ESPHome requires the use of a ESP32 as a Bluetooth BLE Proxy. I recommend using the *nodemcu32* as this *just works!*
+#### BT Proxy for ESPHome
+
+Connection through ESPHome requires the use of a permanently powered on ESP32 as a Bluetooth BLE Proxy. I recommend using the *nodemcu32* for this as it *just works!*
 Get the `ESP32-WROOM-32U` with the external antenna for the best range.
 There is an example config for the BT proxy in the examples folder.
 
@@ -57,22 +76,23 @@ Arduino IDE is supported by this library, and has the best board support for Ard
 
 ### VSCode + PlatformIO
 
-This code should with PlatformIO too, but it's secondary to the Arduino IDE. 
+This code works with PlatformIO too, but it's secondary to the Arduino IDE. 
 The reason is that the low power boards like the *Firebeetle 2 ESP32 C6* are not supported by PlatformIO (at time of writing).
 
 ## Example code and config
 
 Refer to the directory `./examples`  for specific library implementations.
 
-- ESPHome BLE proxy configuration [ble-proxy.yaml](.\examples\esphome\ble-proxy.yaml)
+- ESPHome BLE proxy configuration [ble-proxy.yaml](./examples/esphome/ble-proxy.yaml)
 - DFRobot ESP32 Firebeetle 2 C6 + DHT11 Temperature and Humidity using ArduinoBLE  [FireBeetle2C6.ino](./examples/FireBeetle2C6/FireBeetle2C6.ino)
 - NimBLE BLE Library  [NimBLE.ino](./examples/NimBLE/NimBLE.ino)
 - ESP32 native IDF calls to use BLE 5 for long range and extended payload. [ESP32C6_ESP_BLE5_LongRange_Firebeetle2.ino](./examples/ESP32C6_ESP_BLE5_LongRange_Firebeetle2/ESP32C6_ESP_BLE5_LongRange_Firebeetle2.ino)
+- Encryption [NimBLE_Encryption.ino](./examples/NimBLE_Encryption/NimBLE_Encryption.ino)
 
 ## Usage
 
 This provides a non encrypted client that can send non encrypted data. 
-[Encryption is also possible](.\examples\NimBLE_Encryption\NimBLE_Encryption.ino)
+[Encryption is also possible](./examples/NimBLE_Encryption/NimBLE_Encryption.ino)
 
 ```cpp
   // Short or long name sent based on packet size
@@ -120,7 +140,7 @@ Thanks to @Bluetooth-Devices for the docs
 
 ### Encryption is supported!
 
-Take a look at [.\examples\NimBLE_Encryption\NimBLE_Encryption.ino](.\examples\NimBLE_Encryption\NimBLE_Encryption.ino)
+Take a look at [./examples/NimBLE_Encryption/NimBLE_Encryption.ino](./examples/NimBLE_Encryption/NimBLE_Encryption.ino)
 
 ### Data Types 
 
