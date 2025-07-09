@@ -26,26 +26,9 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
   _counter = counter;
 
   memcpy(bindKey, key, sizeof(uint8_t) * BIND_KEY_LEN);
-  // Print the encryption key as a string for BTHome (hex, no spaces, lowercase)
-  Serial.print("Encryption Key (BTHome format): ");
-  for (size_t i = 0; i < ENCRYPTION_KEY_LENGTH; i++)
-  {
-    if (bindKey[i] < 0x10)
-      Serial.print('0');
-    Serial.print(bindKey[i], HEX);
-  }
-
-  Serial.println();
   memcpy(_macAddress, macAddress, BLE_MAC_ADDRESS_LENGTH);
-
-  Serial.println("Setting up the keys");
-  delay(50);
-
   mbedtls_ccm_init(&this->_encryptCTX);
   mbedtls_ccm_setkey(&this->_encryptCTX, MBEDTLS_CIPHER_ID_AES, bindKey, ENCRYPTION_KEY_LENGTH * 8);
-
-  Serial.println("Keys set up");
-  delay(50);
 }
 
 /// @brief Clear the measurement data.
@@ -186,14 +169,14 @@ bool BaseDevice::addRaw(uint8_t sensorId, uint8_t *value, uint8_t size)
 
 size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 {
-  char serviceData[MAX_ADVERTISEMENT_SIZE];
+  uint8_t serviceData[MAX_ADVERTISEMENT_SIZE];
   uint8_t serviceDataIndex = 0;
 
   serviceData[serviceDataIndex++] = SERVICE_DATA; // DO NOT CHANGE -- Service Data - 16-bit UUID
   serviceData[serviceDataIndex++] = UUID1;        // DO NOT CHANGE -- UUID
   serviceData[serviceDataIndex++] = UUID2;        // DO NOT CHANGE -- UUID
 
-  char indicatorByte = FLAG_VERSION;
+  uint8_t indicatorByte = FLAG_VERSION;
 
   if (_triggerDevice)
   {
@@ -227,7 +210,7 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
     nonce[6] = UUID1;
     nonce[7] = UUID2;
     nonce[8] = FLAG_VERSION | FLAG_ENCRYPT;
-    memcpy(&nonce[9], countPtr, 4);
+    memcpy(&nonce[9], countPtr, MIC_LEN);
 
     mbedtls_ccm_encrypt_and_tag(&_encryptCTX, sortedBytesLength, nonce, NONCE_LEN, 0, 0,
                                 &sortedBytes[0], &ciphertext[0], encryptionTag,
@@ -298,25 +281,21 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 
 size_t BaseDevice::getMeasurementByteArray(uint8_t sortedBytes[MAX_ADVERTISEMENT_SIZE])
 {
+    // 1. Sort entries by object_id (first byte)
+    std::sort(_sensorData.begin(), _sensorData.end(),
+              [](const std::vector<uint8_t>& a, const std::vector<uint8_t>& b) {
+                  return a[0] < b[0];
+              });
 
-  // Sort entries by first byte (object_id)
-  std::sort(_sensorData.begin(), _sensorData.end(),
-            [](const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
-            {
-              return a[0] < b[0];
-            });
-
-  // Flatten into buffer
-  std::vector<uint8_t> buffer;
-  for (const auto &entry : _sensorData)
-  {
-    buffer.insert(buffer.end(), entry.begin(), entry.end());
-  }
-
-  for (size_t i = 0; i < buffer.size(); ++i)
-  {
-    sortedBytes[i] = buffer[i];
-  }
-
-  return buffer.size();
+    // 2. Flatten directly into sortedBytes, avoiding extra RAM
+    size_t idx = 0;
+    for (const std::vector<uint8_t>& entry : _sensorData) {
+        for (uint8_t b : entry) {
+            if (idx >= MAX_ADVERTISEMENT_SIZE) {
+                return idx;
+            }
+            sortedBytes[idx++] = b;
+        }
+    }
+    return idx;
 }
