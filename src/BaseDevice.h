@@ -30,7 +30,7 @@ public:
   bool addRaw(uint8_t sensor, uint8_t *value, uint8_t size);
 
 private:
-  bool pushBytes(uint64_t value2, BtHomeType sensor);
+  bool pushBytes(uint64_t value2, BtHomeState sensor);
   uint8_t _sensorDataIdx = 0;
   byte _sensorData[MAX_MEASUREMENT_SIZE];
   char _shortName[MAX_LENGTH_SHORT_NAME + NULL_TERMINATOR_SIZE];

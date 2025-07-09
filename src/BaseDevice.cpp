@@ -85,9 +85,8 @@ bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
     return false;
   }
 
-  _sensorData[_sensorDataIdx++] = sensor.id;
-  _sensorData[_sensorDataIdx++] = state;
-  return true;
+  return pushBytes(state, sensor);
+
 }
 
 /// @brief Add a state or step value to the sensor data packet.
@@ -97,12 +96,13 @@ bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
 /// @return
 bool BaseDevice::addState(BtHomeState sensor, uint8_t state, uint8_t steps)
 {
-  if (addState(sensor, state))
+    if (!hasEnoughSpace(sensor))
   {
-    _sensorData[_sensorDataIdx++] = steps;
-    return true;
+    return false;
   }
-  return false;
+
+  uint16_t stepState = ((uint16_t)steps <<8 | state);
+  return pushBytes(stepState, sensor);
 }
 
 bool BaseDevice::addUnsignedInteger(BtHomeType sensor, uint64_t value)
@@ -142,7 +142,7 @@ bool BaseDevice::addFloat(BtHomeType sensor, float value)
   return pushBytes(static_cast<uint64_t>(scaledValue), sensor);
 }
 
-bool BaseDevice::pushBytes(uint64_t value2, BtHomeType sensor)
+bool BaseDevice::pushBytes(uint64_t value2, BtHomeState sensor)
 {
   _sensorData[_sensorDataIdx] = sensor.id;
   _sensorDataIdx++;
