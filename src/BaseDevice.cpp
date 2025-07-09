@@ -298,15 +298,25 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 
 size_t BaseDevice::getMeasurementByteArray(uint8_t sortedBytes[MAX_ADVERTISEMENT_SIZE])
 {
-  uint8_t index = 0;
 
-  for (size_t i = 0; i < _sensorData.size(); i++)
+  // Sort entries by first byte (object_id)
+  std::sort(_sensorData.begin(), _sensorData.end(),
+            [](const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
+            {
+              return a[0] < b[0];
+            });
+
+  // Flatten into buffer
+  std::vector<uint8_t> buffer;
+  for (const auto &entry : _sensorData)
   {
-    size_t vectorSize = _sensorData[i].size();
-    for (size_t k = 0; k < vectorSize; k++)
-    {
-      sortedBytes[index++] = _sensorData[i][k];
-    }
+    buffer.insert(buffer.end(), entry.begin(), entry.end());
   }
-  return index;
+
+  for (size_t i = 0; i < buffer.size(); ++i)
+  {
+    sortedBytes[i] = buffer[i];
+  }
+
+  return buffer.size();
 }
