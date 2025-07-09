@@ -24,7 +24,7 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 {
   _useEncryption = true;
   _counter = counter;
-  
+
   memcpy(bindKey, key, sizeof(uint8_t) * BIND_KEY_LEN);
   // Print the encryption key as a string for BTHome (hex, no spaces, lowercase)
   Serial.print("Encryption Key (BTHome format): ");
@@ -52,7 +52,7 @@ BaseDevice::BaseDevice(const char *shortName, const char *completeName, bool isT
 void BaseDevice::resetMeasurement()
 {
   _sensorDataIdx = 0;
-  memset(_sensorData, 0, MAX_MEASUREMENT_SIZE);
+  _sensorData.clear();
 }
 
 /// @brief Check that there is enough space in the sensor data packet for the given size.
@@ -86,7 +86,6 @@ bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
   }
 
   return pushBytes(state, sensor);
-
 }
 
 /// @brief Add a state or step value to the sensor data packet.
@@ -96,12 +95,12 @@ bool BaseDevice::addState(BtHomeState sensor, uint8_t state)
 /// @return
 bool BaseDevice::addState(BtHomeState sensor, uint8_t state, uint8_t steps)
 {
-    if (!hasEnoughSpace(sensor))
+  if (!hasEnoughSpace(sensor))
   {
     return false;
   }
 
-  uint16_t stepState = ((uint16_t)steps <<8 | state);
+  uint16_t stepState = ((uint16_t)steps << 8 | state);
   return pushBytes(stepState, sensor);
 }
 
@@ -144,13 +143,16 @@ bool BaseDevice::addFloat(BtHomeType sensor, float value)
 
 bool BaseDevice::pushBytes(uint64_t value2, BtHomeState sensor)
 {
-  _sensorData[_sensorDataIdx] = sensor.id;
-  _sensorDataIdx++;
+  std::vector<uint8_t> vector;
+  vector.push_back(sensor.id);
+
   for (uint8_t i = 0; i < sensor.byteCount; i++)
   {
-    _sensorData[_sensorDataIdx] = static_cast<byte>((value2 >> (8 * i)) & 0xff);
-    _sensorDataIdx++;
+    vector.push_back(static_cast<byte>((value2 >> (8 * i)) & 0xff));
   }
+
+  _sensorData.push_back(vector);
+  _sensorDataIdx += sensor.byteCount + TYPE_INDICATOR_SIZE;
   return true;
 }
 
@@ -168,12 +170,17 @@ bool BaseDevice::addRaw(uint8_t sensorId, uint8_t *value, uint8_t size)
     return false;
   }
 
-  _sensorData[_sensorDataIdx++] = sensorId;
-  _sensorData[_sensorDataIdx++] = static_cast<byte>(size & 0xff);
+  std::vector<uint8_t> vector;
+  vector.push_back(sensorId);
+  vector.push_back(size);
+
   for (uint8_t i = 0; i < size; i++)
   {
-    _sensorData[_sensorDataIdx++] = static_cast<byte>(value[i] & 0xff);
+    vector.push_back(value[i] & 0xff);
   }
+
+  _sensorData.push_back(vector);
+  _sensorDataIdx += size + RAW_HEADER_BYTE_SIZE;
   return true;
 }
 
@@ -200,7 +207,9 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
 
   serviceData[serviceDataIndex++] = indicatorByte;
 
-  // The encryption
+  uint8_t sortedBytes[MAX_ADVERTISEMENT_SIZE];
+  size_t sortedBytesLength = getMeasurementByteArray(sortedBytes);
+
   if (_useEncryption)
   {
 
@@ -220,8 +229,8 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
     nonce[8] = FLAG_VERSION | FLAG_ENCRYPT;
     memcpy(&nonce[9], countPtr, 4);
 
-    mbedtls_ccm_encrypt_and_tag(&_encryptCTX, _sensorDataIdx, nonce, NONCE_LEN, 0, 0,
-                                &_sensorData[0], &ciphertext[0], encryptionTag,
+    mbedtls_ccm_encrypt_and_tag(&_encryptCTX, sortedBytesLength, nonce, NONCE_LEN, 0, 0,
+                                &sortedBytes[0], &ciphertext[0], encryptionTag,
                                 MIC_LEN);
 
     for (uint8_t i = 0; i < _sensorDataIdx; i++)
@@ -242,9 +251,9 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   }
   else
   {
-    for (uint8_t i = 0; i < _sensorDataIdx; i++)
+    for (uint8_t i = 0; i < sortedBytesLength; i++)
     {
-      serviceData[serviceDataIndex++] = _sensorData[i]; // Add the sensor data to the Service Data
+      serviceData[serviceDataIndex++] = sortedBytes[i]; // Add the sensor data to the Service Data
     }
   }
 
@@ -287,6 +296,17 @@ size_t BaseDevice::getAdvertisementData(uint8_t buffer[MAX_ADVERTISEMENT_SIZE])
   return bufferDataIndex;
 }
 
-void BaseDevice::writeEncryptedPayload(uint8_t serviceDataBuffer[MAX_ADVERTISEMENT_SIZE], uint8_t *index)
+size_t BaseDevice::getMeasurementByteArray(uint8_t sortedBytes[MAX_ADVERTISEMENT_SIZE])
 {
+  uint8_t index = 0;
+
+  for (size_t i = 0; i < _sensorData.size(); i++)
+  {
+    size_t vectorSize = _sensorData[i].size();
+    for (size_t k = 0; k < vectorSize; k++)
+    {
+      sortedBytes[index++] = _sensorData[i][k];
+    }
+  }
+  return index;
 }

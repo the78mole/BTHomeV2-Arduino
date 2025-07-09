@@ -32,7 +32,7 @@ public:
 private:
   bool pushBytes(uint64_t value2, BtHomeState sensor);
   uint8_t _sensorDataIdx = 0;
-  byte _sensorData[MAX_MEASUREMENT_SIZE];
+  std::vector<std::vector<uint8_t>> _sensorData;
   char _shortName[MAX_LENGTH_SHORT_NAME + NULL_TERMINATOR_SIZE];
   char _completeName[MAX_LENGTH_COMPLETE_NAME + NULL_TERMINATOR_SIZE];
   bool hasEnoughSpace(BtHomeState sensor);
@@ -45,6 +45,5 @@ private:
   mbedtls_ccm_context _encryptCTX;
   uint8_t _macAddress[BLE_MAC_ADDRESS_LENGTH];
   uint8_t bindKey[BIND_KEY_LEN];
-  void writeEncryptedPayload(uint8_t serviceDataBuffer[MAX_ADVERTISEMENT_SIZE], uint8_t *index);
-  
+  size_t getMeasurementByteArray(uint8_t sortedBytes[MAX_ADVERTISEMENT_SIZE]);
 };
