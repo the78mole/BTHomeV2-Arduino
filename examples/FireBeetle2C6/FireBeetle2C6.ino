@@ -4,7 +4,7 @@ Example of using a DHT11 to measure humidity and temperature on a FireBeetle2 ES
 #include <BtHomeV2Device.h>
 #include <ArduinoBLE.h>
 #include <DHT11.h>
-#define SLEEP_DURATION_SECONDS 10
+#define SLEEP_DURATION_SECONDS 60
 #define BATTERY_MEASUREMENT_PIN 0
 #define DHT_POWER_PIN 19
 #define DHT_DATA_PIN 20
@@ -91,9 +91,6 @@ void setup() {
 
   size = device.getAdvertisementData(advertisementData);
   sendAdvertisement(advertisementData, size);
-
-  // turn off BLE
-  BLE.end();
 
   // turn off LED
   digitalWrite(D13, LOW);
