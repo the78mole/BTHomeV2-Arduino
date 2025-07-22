@@ -9,8 +9,8 @@ Example of using a DHT11 to measure humidity and temperature on a FireBeetle2 ES
 #define DHT_POWER_PIN 19
 #define DHT_DATA_PIN 20
 
-const float V_CUTOFF = 3000;  // 0% batteryPercentage
-const float V_FULL = 4200;    // 100% batteryPercentage
+const float V_CUTOFF = 3000; // 0% batteryPercentage
+const float V_FULL = 4200;   // 100% batteryPercentage
 
 /**  This code should work with most devices.
 FireBeetle 2 Notes
@@ -21,10 +21,10 @@ FireBeetle 2 Notes
  */
 RTC_DATA_ATTR uint64_t counter = 0;
 
-
-void setup() {
+void setup()
+{
   Serial.begin(115200);
-  
+
   // turn on sensor as it needs time to wake up
   pinMode(DHT_POWER_PIN, OUTPUT);
   digitalWrite(DHT_POWER_PIN, HIGH);
@@ -41,10 +41,16 @@ void setup() {
   Serial.print(analogMillivolts);
   Serial.println("mV");
 
-  float batteryPercentage = float(analogMillivolts - V_CUTOFF) / float(V_FULL - V_CUTOFF) * 100.0;
+  // Fixed battery percentage calculation
+  float batteryPercentage = ((analogMillivolts - V_CUTOFF) * 100.0) / (V_FULL - V_CUTOFF);
   batteryPercentage = constrain(batteryPercentage, 0.0, 100.0);
 
-  if (!BLE.begin()) {
+  Serial.print("Battery percentage: ");
+  Serial.print(batteryPercentage, 1);
+  Serial.println("%");
+
+  if (!BLE.begin())
+  {
     // If BLE doesn't start, then just go to sleep
     Serial.println("Failed to initialize BLE!");
     esp_sleep_enable_timer_wakeup(SLEEP_DURATION_SECONDS * 1000000);
@@ -56,9 +62,17 @@ void setup() {
   uint8_t size = 0;
 
   // first advertisement with battery percentage
-  BtHomeV2Device device("BEETLE", "My Firebeetle V2", false);
+  BtHomeV2Device device("BEETLE", "Firebeetle Sensor", false);
   device.addBatteryPercentage(batteryPercentage);
-  device.addCount_0_4294967295(counter++);
+  float volts = analogMillivolts / 1000.0f;
+  device.addVoltage_0_to_65_resolution_0_001(volts);
+
+  // DURING DEVELOPMENT -> check if the last entry can fit
+  if (!device.addCount_0_4294967295(counter++))
+  {
+    Serial.println("Failed to add count"); 
+  }
+
   size = device.getAdvertisementData(advertisementData);
   sendAdvertisement(advertisementData, size);
   device.clearMeasurementData(); // clear the buffer before the next advertisement
@@ -73,21 +87,22 @@ void setup() {
   // power off sensor
   digitalWrite(DHT_POWER_PIN, LOW);
 
-  if (result == 0) {
+  if (result == 0)
+  {
     Serial.print("Temperature: ");
     Serial.print(temperature);
     Serial.print(" °C\tHumidity: ");
     Serial.print(humidity);
     Serial.println(" %");
-  } else {
-    Serial.println(DHT11::getErrorString(result));
+    device.setRunningState(Running_Sensor_Status_Running); // Running == DHT working
+    device.addTemperature_neg327_to_327_Resolution_0_01(temperature);
+    device.addHumidityPercent_Resolution_1(humidity);
   }
-
-  // second advertisement with the voltage
-  float volts = analogMillivolts / 1000.0f;
-  device.addVoltage_0_to_6550_resolution_0_1(volts);
-  device.addTemperature_neg327_to_327_Resolution_0_01(temperature);
-  device.addHumidityPercent_Resolution_1(humidity);
+  else
+  {
+    Serial.println(DHT11::getErrorString(result));
+    device.setRunningState(Running_Sensor_Status_Not_Running);
+  }
 
   size = device.getAdvertisementData(advertisementData);
   sendAdvertisement(advertisementData, size);
@@ -99,7 +114,8 @@ void setup() {
   esp_deep_sleep_start();
 }
 
-void sendAdvertisement(uint8_t advertisementData[], size_t size) {
+void sendAdvertisement(uint8_t advertisementData[], size_t size)
+{
   BLEAdvertisingData advData;
   advData.setRawData(advertisementData, size);
   BLE.setAdvertisingData(advData);
@@ -110,5 +126,6 @@ void sendAdvertisement(uint8_t advertisementData[], size_t size) {
   Serial.println("Raw advertising ended!");
 }
 
-void loop() {
+void loop()
+{
 }
