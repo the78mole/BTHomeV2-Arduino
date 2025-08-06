@@ -4,13 +4,13 @@ Example of using a DHT11 to measure humidity and temperature on a FireBeetle2 ES
 #include <BtHomeV2Device.h>
 #include <ArduinoBLE.h>
 #include <DHT11.h>
-#define SLEEP_DURATION_SECONDS 60
+#define SLEEP_DURATION_SECONDS 180
 #define BATTERY_MEASUREMENT_PIN 0
 #define DHT_POWER_PIN 19
 #define DHT_DATA_PIN 20
 
-const float V_CUTOFF = 3000; // 0% batteryPercentage
-const float V_FULL = 4200;   // 100% batteryPercentage
+const float V_CUTOFF = 3000;  // 0% batteryPercentage
+const float V_FULL = 4200;    // 100% batteryPercentage
 
 /**  This code should work with most devices.
 FireBeetle 2 Notes
@@ -21,25 +21,7 @@ FireBeetle 2 Notes
  */
 RTC_DATA_ATTR uint64_t counter = 0;
 
-void setup()
-{
-  Serial.begin(115200);
-
-  // turn on sensor as it needs time to wake up
-  pinMode(DHT_POWER_PIN, OUTPUT);
-  digitalWrite(DHT_POWER_PIN, HIGH);
-
-  // turn on LED
-  pinMode(D13, OUTPUT);
-  digitalWrite(D13, HIGH);
-
-  analogReadResolution(12);
-  int analogMillivolts = analogReadMilliVolts(BATTERY_MEASUREMENT_PIN) * 2;
-
-  delay(50);
-  Serial.print("BAT millivolts value = ");
-  Serial.print(analogMillivolts);
-  Serial.println("mV");
+void publishSensorReading(int analogMillivolts) {
 
   // Fixed battery percentage calculation
   float batteryPercentage = ((analogMillivolts - V_CUTOFF) * 100.0) / (V_FULL - V_CUTOFF);
@@ -49,8 +31,7 @@ void setup()
   Serial.print(batteryPercentage, 1);
   Serial.println("%");
 
-  if (!BLE.begin())
-  {
+  if (!BLE.begin()) {
     // If BLE doesn't start, then just go to sleep
     Serial.println("Failed to initialize BLE!");
     esp_sleep_enable_timer_wakeup(SLEEP_DURATION_SECONDS * 1000000);
@@ -68,16 +49,15 @@ void setup()
   device.addVoltage_0_to_65_resolution_0_001(volts);
 
   // DURING DEVELOPMENT -> check if the last entry can fit
-  if (!device.addCount_0_4294967295(counter++))
-  {
-    Serial.println("Failed to add count"); 
+  if (!device.addCount_0_4294967295(counter++)) {
+    Serial.println("Failed to add count");
   }
 
   size = device.getAdvertisementData(advertisementData);
-  sendAdvertisement(advertisementData, size);
-  device.clearMeasurementData(); // clear the buffer before the next advertisement
+  sendBluetoothAdvertisement(advertisementData, size);
+  device.clearMeasurementData();  // clear the buffer before the next advertisement
 
-  DHT11 dht11(DHT_DATA_PIN); // Initialise the DHT code
+  DHT11 dht11(DHT_DATA_PIN);  // Initialise the DHT code
 
   int temperature = 0;
   int humidity = 0;
@@ -87,26 +67,53 @@ void setup()
   // power off sensor
   digitalWrite(DHT_POWER_PIN, LOW);
 
-  if (result == 0)
-  {
+  if (result == 0) {
     Serial.print("Temperature: ");
     Serial.print(temperature);
     Serial.print(" °C\tHumidity: ");
     Serial.print(humidity);
     Serial.println(" %");
-    device.setRunningState(Running_Sensor_Status_Running); // Running == DHT working
+    device.setRunningState(Running_Sensor_Status_Running);  // Running == DHT working
     device.addTemperature_neg327_to_327_Resolution_0_01(temperature);
     device.addHumidityPercent_Resolution_1(humidity);
-  }
-  else
-  {
+  } else {
     Serial.println(DHT11::getErrorString(result));
     device.setRunningState(Running_Sensor_Status_Not_Running);
   }
 
   size = device.getAdvertisementData(advertisementData);
-  sendAdvertisement(advertisementData, size);
+  sendBluetoothAdvertisement(advertisementData, size);
+}
 
+
+void setup() {
+  Serial.begin(115200);
+
+  // turn on sensor as it needs time to wake up
+  pinMode(DHT_POWER_PIN, OUTPUT);
+  digitalWrite(DHT_POWER_PIN, HIGH);
+
+  // turn on LED
+  pinMode(D13, OUTPUT);
+
+  digitalWrite(D13, HIGH);
+
+  analogReadResolution(12);
+  int analogMillivolts = analogReadMilliVolts(BATTERY_MEASUREMENT_PIN) * 2;
+
+  delay(50);
+  Serial.print("BAT millivolts value = ");
+  Serial.print(analogMillivolts);
+  Serial.println("mV");
+
+
+  if (analogMillivolts < 3300) {
+    Serial.print("BAT millivolts too low! Skipping advertisement ");
+    Serial.print(analogMillivolts);
+  } else {
+    publishSensorReading(analogMillivolts);
+  }
+  
   // turn off LED
   digitalWrite(D13, LOW);
 
@@ -114,8 +121,7 @@ void setup()
   esp_deep_sleep_start();
 }
 
-void sendAdvertisement(uint8_t advertisementData[], size_t size)
-{
+void sendBluetoothAdvertisement(uint8_t advertisementData[], size_t size) {
   BLEAdvertisingData advData;
   advData.setRawData(advertisementData, size);
   BLE.setAdvertisingData(advData);
@@ -126,6 +132,6 @@ void sendAdvertisement(uint8_t advertisementData[], size_t size)
   Serial.println("Raw advertising ended!");
 }
 
-void loop()
-{
+void loop() {
+  Serial.println("Should not see this!");
 }
