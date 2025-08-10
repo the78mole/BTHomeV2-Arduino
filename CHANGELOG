@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+### Changed
+
+- Firebeetle example 
+  - sleep to 3 mins / 180 seconds
+  - minimum battery sleep at 3.3v  
+
+
 ## [3.1.0]
 
 ### Added
